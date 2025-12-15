@@ -4,7 +4,6 @@ module Muwu
 
     require 'iso-639'
 
-
     include Muwu
     include Helper
 
@@ -23,7 +22,6 @@ module Muwu
       @validation_method_name = "validate_option_#{@key_validated}"
       @value_provided = value_provided
     end
-
 
 
     public
@@ -89,40 +87,26 @@ module Muwu
     end
 
 
-
     private
 
 
-    def validate_option_boolean
-      case @value_provided
-      when false, true
-        return @value_provided
-      when nil, '', 'nil'
-        return nil
-      else
-        @project.exceptions_add ProjectException::OptionValueNotUnderstood.new(@key_validated, @value_provided)
-        return nil
-      end
-    end
-
-
     def validate_option_contents_section_numbers_receive_link
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
     def validate_option_generate_navigators_automatically
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
     def validate_option_generate_subcontents_automatically
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
     def validate_option_html_head_includes_metadata_tags
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
@@ -143,26 +127,12 @@ module Muwu
 
 
     def validate_option_html_uses_javascript_navigation
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
     def validate_option_markdown_allows_raw_html
-      return validate_option_boolean
-    end
-
-
-    def validate_option_markdown_renderer
-      value = value_provided_as_string
-      case value
-      when 'commonmarker'
-        return value
-      when 'motion-markdown-it', 'motion_markdown_it'
-        return 'motion-markdown-it'
-      else
-        @project.exceptions_add ProjectException::OptionValueNotUnderstood.new(@key_validated, @value_provided)
-        return nil
-      end
+      return validation_for_boolean
     end
 
 
@@ -190,31 +160,18 @@ module Muwu
     end
 
 
-    def validate_option_output_file_basename
-      case @value_provided
-      when String
-        return SanitizerHelper.sanitize_destination_file_basename(File.basename(@value_provided))
-      when nil
-        return nil
-      else
-        @project.exceptions_add ProjectException::OptionValueNotUnderstood.new(@key_validated, @value_provided)
-        return nil
-      end
-    end
-
-
     def validate_option_output_file_css_basename
-      return validate_option_output_file_basename
+      return validation_for_output_file_basename
     end
 
 
     def validate_option_output_file_html_basename
-      return validate_option_output_file_basename
+      return validation_for_output_file_basename
     end
 
 
     def validate_option_output_file_js_basename
-      return validate_option_output_file_basename
+      return validation_for_output_file_basename
     end
 
 
@@ -243,7 +200,7 @@ module Muwu
 
 
     def validate_option_render_punctuation_smart
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
@@ -266,7 +223,7 @@ module Muwu
 
 
     def validate_option_render_section_numbers
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
@@ -298,7 +255,7 @@ module Muwu
 
 
     def validate_option_render_punctuation_smart
-      return validate_option_boolean
+      return validation_for_boolean
     end
 
 
@@ -308,7 +265,33 @@ module Muwu
 
 
     def validate_option_warning_if_parent_heading_lacks_source
-      return validate_option_boolean
+      return validation_for_boolean
+    end
+
+
+    def validation_for_boolean
+      case @value_provided
+      when false, true
+        return @value_provided
+      when nil, '', 'nil'
+        return nil
+      else
+        @project.exceptions_add ProjectException::OptionValueNotUnderstood.new(@key_validated, @value_provided)
+        return nil
+      end
+    end
+
+
+    def validation_for_output_file_basename
+      case @value_provided
+      when String
+        return SanitizerHelper.sanitize_destination_file_basename(File.basename(@value_provided))
+      when nil
+        return nil
+      else
+        @project.exceptions_add ProjectException::OptionValueNotUnderstood.new(@key_validated, @value_provided)
+        return nil
+      end
     end
 
 

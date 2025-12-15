@@ -5,10 +5,7 @@ module Muwu
 
       include Muwu
 
-
-      attr_accessor(
-        :renderer
-      )
+      attr_accessor :renderer
 
 
       def self.build
@@ -27,6 +24,7 @@ module Muwu
         @manifest_text_item = manifest_text_item
         @project = manifest_text_item.project
         @href_helper = Helper::HtmlHrefHelper.new(manifest_text_item)
+        phase_1_set_commonmarker_options
         phase_1_set_destination
         phase_1_set_heading
         phase_1_set_heading_origin
@@ -37,7 +35,6 @@ module Muwu
         phase_1_set_does_have_source_text
         phase_1_set_is_parent_heading
         phase_1_set_text_root_name
-        phase_1_set_markdown_renderer
         phase_2_set_source_filename_absolute
         phase_2_set_source_filename_relative
         phase_3_set_sections
@@ -48,12 +45,23 @@ module Muwu
       end
 
 
+      def phase_1_set_commonmarker_options
+        @renderer.commonmarker_options = { extension: {}, render: {} }
+        @renderer.commonmarker_options[:extension].merge!({ description_lists: true })
+        if @project.options.render_punctuation_smart
+          @renderer.commonmarker_options[:render].merge!({ smart: true })
+        end
+        if @project.options.markdown_allows_raw_html
+          @renderer.commonmarker_options[:render].merge!({ unsafe: true })
+        end
+      end
+
 
       def phase_1_set_destination
         @renderer.destination = @manifest_text_item.destination
       end
-      
-      
+
+
       def phase_1_set_does_have_source_text
         if @manifest_text_item.source_file_does_exist
           @renderer.does_have_source_text = true
@@ -61,8 +69,8 @@ module Muwu
           @renderer.does_have_source_text = false
         end
       end
-      
-      
+
+
       def phase_1_set_heading
         @renderer.heading = @manifest_text_item.heading
       end
@@ -71,28 +79,15 @@ module Muwu
       def phase_1_set_heading_origin
         @renderer.heading_origin = @manifest_text_item.heading_origin
       end
-      
-      
+
+
       def phase_1_set_is_parent_heading
         @renderer.is_parent_heading = @manifest_text_item.is_parent_heading
-      end
-      
-      
-      def phase_1_set_markdown_renderer
-        @renderer.markup_renderer = Muwu::RenderMarkupToHtml.new(@project)
       end
 
 
       def phase_1_set_numbering
         @renderer.numbering = @manifest_text_item.numbering
-      end
-      
-      
-      def phase_1_set_options_commonmarker
-        @renderer.options_commonmarker = []
-        if @project.options.render_punctuation_smart
-          @renderer.options_commonmarker.append(:SMART)
-        end
       end
 
 
@@ -135,8 +130,8 @@ module Muwu
           @renderer.sections = determine_sections
         end
       end
-      
-      
+
+
       def phase_4_set_end_links
         if text_item_should_have_end_links
           @renderer.end_links = determine_end_links
@@ -147,13 +142,13 @@ module Muwu
       def phase_4_set_html_attr_id
         @renderer.html_attr_id = ['text', @renderer.text_root_name, @renderer.section_number_as_attr].join('_')
       end
-      
-      
+
+
       def phase_4_set_will_render_section_number
         @renderer.will_render_section_number = determine_whether_text_item_will_render_section_number
       end
-      
-      
+
+
       def phase_4_set_subsections_are_distinct
         @renderer.subsections_are_distinct = determine_whether_subsections_are_distinct
       end
@@ -172,7 +167,7 @@ module Muwu
 
       def determine_end_links
         end_links = {}
-        if @project.options.render_section_end_links   
+        if @project.options.render_section_end_links
           @project.options.render_section_end_links.each do |link|
             end_links[link] = determine_end_links_href(link)
           end
@@ -191,7 +186,7 @@ module Muwu
           @href_helper.to_document_top
         end
       end
-      
+
 
       def determine_sections
         sections = []
@@ -220,7 +215,7 @@ module Muwu
           true
         end
       end
-      
+
 
       def text_item_should_be_distinct
         if @project.options.render_sections_distinctly_depth_max == nil
@@ -231,8 +226,8 @@ module Muwu
           return false
         end
       end
-      
-      
+
+
       def text_item_should_have_end_links
         if text_item_should_be_distinct
           return text_item_distinct_should_have_end_links
@@ -240,8 +235,8 @@ module Muwu
           return false
         end
       end
-      
-          
+
+
       def text_item_distinct_should_have_end_links
         if @renderer.is_parent_heading
           return text_item_distinct_parent_should_have_end_links
@@ -249,8 +244,8 @@ module Muwu
           return true
         end
       end
-         
-         
+
+
       def text_item_distinct_parent_should_have_end_links
         if @renderer.does_have_source_text == true
           return true
@@ -258,8 +253,8 @@ module Muwu
           return text_item_distinct_parent_without_source_should_have_end_links
         end
       end
-      
-      
+
+
       def text_item_distinct_parent_without_source_should_have_end_links
         if determine_whether_subsections_are_distinct == true
           return false
@@ -267,8 +262,8 @@ module Muwu
           return true
         end
       end
-        
-      
+
+
     end
   end
 end

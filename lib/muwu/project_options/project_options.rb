@@ -9,7 +9,6 @@ module Muwu
       :html_lang,
       :html_uses_javascript_navigation,
       :markdown_allows_raw_html,
-      :markdown_renderer,
       :outline_text_pathnames,
       :output_destination,
       :output_file_css_basename,
@@ -43,6 +42,9 @@ module Muwu
     def inspect_instance_variables
       instance_variables.map { |v| "#{v}=#{instance_variable_get(v).inspect}" }.join(", ")
     end
+
+
+    public
 
 
     def set_option(key, value)

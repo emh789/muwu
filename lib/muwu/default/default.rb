@@ -1,14 +1,12 @@
 module Muwu
   module Default
 
-
     FILENAMES = {
       css_manifest: 'index.scss',
       metadata: 'metadata.yml',
       options: 'options.yml',
       outline: 'outline.yml'
     }
-
 
     FILEPATHS = {
       compiled: './compiled',
@@ -19,7 +17,6 @@ module Muwu
       text: './text'
     }
 
-
     PROJECT_OPTIONS = {
       contents_section_numbers_receive_link: true,
       generate_navigators_automatically: true,
@@ -27,8 +24,7 @@ module Muwu
       html_head_includes_metadata_tags: true,
       html_lang: nil,
       html_uses_javascript_navigation: false,
-      markdown_allows_raw_html: true,
-      markdown_renderer: 'commonmarker',
+      markdown_allows_raw_html: false,
       outline_text_pathnames: 'flexible',
       output_destination: 'file',
       output_file_css_basename: nil,
@@ -46,11 +42,9 @@ module Muwu
       warning_if_parent_heading_lacks_source: true
     }
 
-
     PROJECT_OUTLINE = {
       default_text_block_name: 'main'
     }
-
 
   end
 end

@@ -5,11 +5,12 @@ module Muwu
 
       include Muwu
 
-
       require 'commonmarker'
+      require 'haml'
 
 
       attr_accessor(
+        :commonmarker_options,
         :destination,
         :distinct,
         :does_have_source_text,
@@ -18,7 +19,6 @@ module Muwu
         :heading_origin,
         :html_attr_id,
         :is_parent_heading,
-        :markup_renderer,
         :numbering,
         :project,
         :section_depth,
@@ -144,7 +144,6 @@ module Muwu
       end
 
 
-
       private
 
 
@@ -161,7 +160,22 @@ module Muwu
 
 
       def source_to_html
-        @markup_renderer.render(@source_filename_absolute)
+        case File.extname(@source_filename_absolute).downcase
+        when '.haml'
+          source_to_html_from_haml
+        when '.md'
+          source_to_html_from_md
+        end
+      end
+
+
+      def source_to_html_from_haml
+        Haml::Engine.new(File.read(@source_filename_absolute), {suppress_eval: true}).render
+      end
+
+
+      def source_to_html_from_md
+        Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options)
       end
 
 
