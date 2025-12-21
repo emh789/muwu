@@ -175,7 +175,7 @@ module Muwu
 
 
       def source_to_html_from_md
-        Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options)
+        Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
       end
 
 
