@@ -38,6 +38,7 @@ module Muwu
         phase_2_set_source_filename_absolute
         phase_2_set_source_filename_relative
         phase_3_set_sections
+        phase_3_set_source_relative_segments
         phase_4_set_end_links
         phase_4_set_html_attr_id
         phase_4_set_will_render_section_number
@@ -131,6 +132,12 @@ module Muwu
         end
       end
 
+
+      def phase_3_set_source_relative_segments
+        segments = @manifest_text_item.source_filename_relative.split('/')
+        segments.last.gsub!(/\.[\w\.]*\z/,'')
+        @renderer.source_relative_segments = segments
+      end
 
       def phase_4_set_end_links
         if text_item_should_have_end_links

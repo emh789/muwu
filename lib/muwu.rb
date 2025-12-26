@@ -11,6 +11,7 @@ module Muwu
   require 'haml'
   require 'iso-639'
   require 'logger'
+  require 'nokogiri'
   require 'sassc'
   require 'yaml'
 

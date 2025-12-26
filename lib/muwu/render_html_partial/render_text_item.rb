@@ -7,6 +7,7 @@ module Muwu
 
       require 'commonmarker'
       require 'haml'
+      require 'nokogiri'
 
 
       attr_accessor(
@@ -27,6 +28,7 @@ module Muwu
         :sections,
         :source_filename_absolute,
         :source_filename_relative,
+        :source_relative_segments,
         :subsections_are_distinct,
         :text_root_name,
         :will_render_section_number
@@ -174,8 +176,34 @@ module Muwu
       end
 
 
+      # def source_to_html_from_md
+      #   Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
+      # end
+
+
       def source_to_html_from_md
+        fragment = Nokogiri::HTML5.fragment(source_md_to_html)
+        fragment.css('a.anchor[aria-hidden]').each { |node| node.remove }
+        %w(blockquote dl h1 h2 h3 h4 h5 h6 ol p pre table ul).each do |element|
+          fragment.css(element).each do |node|
+            data_source_class = []
+            @source_relative_segments.each_index do |i|
+              data_source_class << "#{source_relative_segments[i]}-#{node.name}"
+              # node["data-source-#{i}"] = "#{source_relative_segments[i]}-#{node.name}"
+            end
+            node['data-source-class'] = data_source_class.join(' ')
+          end
+        end
+        fragment.to_html
+      end
+
+      def source_md_to_html
         Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
+      end
+
+
+      def source_parsed_classed
+
       end
 
 
