@@ -1,6 +1,6 @@
 module Muwu
   module ManifestTask
-    class TextItem
+    class Topic
 
 
       include Muwu

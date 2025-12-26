@@ -139,31 +139,31 @@ module Muwu
     end
 
 
-    def validate_task_text_item(task)
+    def validate_task_topic(task)
       if task.is_parent_heading
-        return validate_task_text_item_parent_heading(task)
+        return validate_task_topic_parent_heading(task)
       elsif task.is_not_parent_heading
-        return validate_task_text_item_child_heading(task)
+        return validate_task_topic_child_heading(task)
       end
     end
 
 
-    def validate_task_text_item_child_heading(task)
+    def validate_task_topic_child_heading(task)
       if task.source_file_does_exist
         return true
       else
-        @project.exceptions_add ProjectException::TextSourceFileNotFound.new(task)
+        @project.exceptions_add ProjectException::TopicSourceFileNotFound.new(task)
         return false
       end
     end
 
 
-    def validate_task_text_item_parent_heading(task)
+    def validate_task_topic_parent_heading(task)
       if task.source_file_does_exist
         return true
       else
         if @project.options.warning_if_parent_heading_lacks_source
-          @project.exceptions_add ProjectException::TextSourceFileNotFound.new(task)
+          @project.exceptions_add ProjectException::TopicSourceFileNotFound.new(task)
           return false
         end
       end

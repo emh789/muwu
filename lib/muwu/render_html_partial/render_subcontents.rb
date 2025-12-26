@@ -71,7 +71,7 @@ module Muwu
           when ManifestTask::TextGroup
             write_tag_li_open
             @destination.margin_indent do 
-              render_ol_li_heading_and_text_item(section)
+              render_ol_li_heading_and_topic(section)
             end
             write_tag_li_close_outline
           end
@@ -79,14 +79,14 @@ module Muwu
       end
   
   
-      def render_ol_li_heading(text_item)
-        render_tag_a_section_heading(text_item)
+      def render_ol_li_heading(topic)
+        render_tag_a_section_heading(topic)
       end
   
   
-      def render_ol_li_heading_and_text_item(text_item)
-        render_tag_a_section_heading(text_item, trailing_line_feed: true)
-        render_ol(text_item.sections)
+      def render_ol_li_heading_and_topic(topic)
+        render_tag_a_section_heading(topic, trailing_line_feed: true)
+        render_ol(topic.sections)
       end
       
       
@@ -113,7 +113,7 @@ module Muwu
           @destination.margin_indent do 
             if section.is_parent_heading
               render_table_tr_td_number(section)
-              render_table_tr_td_heading_and_text_item(section)
+              render_table_tr_td_heading_and_topic(section)
             elsif section.is_not_parent_heading
               render_table_tr_td_number(section)
               render_table_tr_td_heading(section)
@@ -124,34 +124,34 @@ module Muwu
       end
   
 
-      def render_table_tr_td_heading(text_item)
+      def render_table_tr_td_heading(topic)
         write_tag_td_open(attr_list: "class='heading'")
-        render_tag_a_section_heading(text_item)
+        render_tag_a_section_heading(topic)
         write_tag_td_close_inline
       end
   
 
-      def render_table_tr_td_heading_and_text_item(text_item)
+      def render_table_tr_td_heading_and_topic(topic)
         write_tag_td_open(attr_list: "class='heading'")
-        render_tag_a_section_heading(text_item, trailing_line_feed: true)
+        render_tag_a_section_heading(topic, trailing_line_feed: true)
         @destination.margin_indent do
-          render_table(text_item.sections)
+          render_table(topic.sections)
         end
         write_tag_td_close_outline
       end
 
 
-      def render_table_tr_td_number(text_item)
+      def render_table_tr_td_number(topic)
         write_tag_td_open(attr_list: "class='number'")
-        render_tag_a_section_number(text_item, attr_list: "tabindex='-1'")
+        render_tag_a_section_number(topic, attr_list: "tabindex='-1'")
         write_tag_td_close_inline
       end
   
 
-      def render_tag_a_section_heading(text_item, trailing_line_feed: false)
-        href = @href_helper.to_text_item(text_item)
+      def render_tag_a_section_heading(topic, trailing_line_feed: false)
+        href = @href_helper.to_topic(topic)
         write_tag_a_open(href)
-        write_text_section_heading(text_item)
+        write_text_section_heading(topic)
         write_tag_a_close
         if trailing_line_feed
           write_lf
@@ -160,7 +160,7 @@ module Muwu
   
 
       def render_tag_a_section_number(text_object, attr_list: nil)
-        href = @href_helper.to_text_item(text_object)
+        href = @href_helper.to_topic(text_object)
         write_tag_a_open(href, attr_list: attr_list)
         write_text_section_number(text_object)
         write_tag_a_close
@@ -267,13 +267,13 @@ module Muwu
       end
   
   
-      def write_text_section_heading(text_item)
-        @destination.write_inline text_item.heading
+      def write_text_section_heading(topic)
+        @destination.write_inline topic.heading
       end
   
   
-      def write_text_section_number(text_item)
-        @destination.write_inline text_item.numbering.join('.')
+      def write_text_section_number(topic)
+        @destination.write_inline topic.numbering.join('.')
       end
   
 
@@ -356,13 +356,13 @@ module Muwu
       end
   
   
-      def task_depth_is_within_range(text_item)
+      def task_depth_is_within_range(topic)
         result = nil
         if @item_depth_max == nil
           result = true
-        elsif text_item.section_depth <= @item_depth_max
+        elsif topic.section_depth <= @item_depth_max
           result = true
-        elsif text_item.section_depth > @item_depth_max
+        elsif topic.section_depth > @item_depth_max
           result = false
         end
         result

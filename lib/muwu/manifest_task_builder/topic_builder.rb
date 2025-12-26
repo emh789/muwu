@@ -1,6 +1,6 @@
 module Muwu
   module ManifestTaskBuilders
-    class TextItemBuilder
+    class TopicBuilder
 
 
       include Muwu
@@ -14,19 +14,19 @@ module Muwu
         :parent_manifest_text,
         :project,
         :source_filename,
-        :text_item
+        :topic
       )
 
 
       def self.build
         builder = new
         yield(builder)
-        builder.text_item
+        builder.topic
       end
 
 
       def initialize
-        @text_item = ManifestTask::TextItem.new
+        @topic = ManifestTask::Topic.new
       end
 
 
@@ -47,51 +47,51 @@ module Muwu
 
 
       def phase_1_set_project
-        @text_item.project = @project
+        @topic.project = @project
       end
 
 
       def phase_2_set_source_filename
         @source_filename = determine_source_filename
-        @text_item.source_filename = @source_filename
+        @topic.source_filename = @source_filename
       end
 
 
       def phase_3_set_heading
         @heading_data = determine_heading_data
-        @text_item.heading = @heading_data[:heading]
-        @text_item.heading_origin = @heading_data[:origin]
+        @topic.heading = @heading_data[:heading]
+        @topic.heading_origin = @heading_data[:origin]
       end
 
 
       def phase_4_set_destination
-        @text_item.destination = @parent_manifest_text.destination
+        @topic.destination = @parent_manifest_text.destination
       end
 
 
       def phase_4_set_naming
         if Hash === @outline_fragment
-          @text_item.naming = [@parent_manifest_text.naming, SanitizerHelper.sanitize_text_item_path(outline_step)].flatten
+          @topic.naming = [@parent_manifest_text.naming, SanitizerHelper.sanitize_topic_path(outline_step)].flatten
         else
-          @text_item.naming = [@parent_manifest_text.naming, @heading_data[:heading]].flatten
+          @topic.naming = [@parent_manifest_text.naming, @heading_data[:heading]].flatten
         end
       end
 
 
       def phase_4_set_numbering
-        @text_item.numbering = @numbering
+        @topic.numbering = @numbering
       end
 
 
       def phase_5_set_sections
         if Hash === @outline_fragment
-          @text_item.sections = determine_sections
+          @topic.sections = determine_sections
         end
       end
 
 
       def phase_6_validate_file_presence
-        ProjectValidator.new(@project).validate_task_text_item(@text_item)
+        ProjectValidator.new(@project).validate_task_topic(@topic)
       end
 
 
@@ -99,9 +99,9 @@ module Muwu
       private
 
 
-      def build_text_item(step, section_numbering)
-        ManifestTaskBuilders::TextItemBuilder.build do |b|
-          b.build_from_outline_fragment_text(step, section_numbering, @text_item)
+      def build_topic(step, section_numbering)
+        ManifestTaskBuilders::TopicBuilder.build do |b|
+          b.build_from_outline_fragment_text(step, section_numbering, @topic)
         end
       end
 
@@ -115,10 +115,10 @@ module Muwu
         sections = []
         child_steps = [@outline_fragment.flatten[1]].flatten
         if child_steps.empty? == false
-          child_section_numbering = section_number_extend(@text_item.numbering)
+          child_section_numbering = section_number_extend(@topic.numbering)
           child_steps.each do |step|
             child_section_numbering = section_number_increment(child_section_numbering)
-            sections << build_text_item(step, child_section_numbering)
+            sections << build_topic(step, child_section_numbering)
           end
         end
         sections
@@ -139,7 +139,7 @@ module Muwu
 
 
       def determine_source_filename_explicitly
-        filename = SanitizerHelper.sanitize_text_item_basename(outline_step)
+        filename = SanitizerHelper.sanitize_topic_basename(outline_step)
         filepath = ['text']
         File.join([filepath, filename].flatten)
       end
@@ -165,7 +165,7 @@ module Muwu
       def determine_source_filename_cascade_implicitly
         source_filename = ''
         file_path = make_filepath_implicitly
-        file_basename = SanitizerHelper.sanitize_text_item_path(outline_step)
+        file_basename = SanitizerHelper.sanitize_topic_path(outline_step)
         file_name_md = file_basename + '.md'
         file_name_haml = file_basename + '.haml'
         file_attempt_md = File.join([file_path, file_name_md].flatten)
@@ -182,16 +182,16 @@ module Muwu
 
 
       def determine_heading_data
-        if @text_item.source_file_does_exist
+        if @topic.source_file_does_exist
           determine_heading_from_file
-        elsif @text_item.source_file_does_not_exist
+        elsif @topic.source_file_does_not_exist
           determine_heading_from_file_basename_or_outline
         end
       end
 
 
       def determine_heading_from_file
-        case File.extname(@text_item.source_filename_absolute).downcase
+        case File.extname(@topic.source_filename_absolute).downcase
         when '.haml'
           determine_heading_from_file_haml
         when '.md'
@@ -203,7 +203,7 @@ module Muwu
 
 
       def determine_heading_from_file_basename
-        heading = File.basename(@text_item.source_filename, '.*')
+        heading = File.basename(@topic.source_filename, '.*')
         origin = :basename
         { heading: heading, origin: origin }
       end
@@ -212,7 +212,7 @@ module Muwu
       def determine_heading_from_file_basename_or_outline
         case @project.outline_text_pathnames
         when 'explicit'
-          heading = File.basename(@text_item.source_filename, '.*')
+          heading = File.basename(@topic.source_filename, '.*')
           origin = :basename
         when 'flexible', 'implicit'
           heading = outline_step
@@ -226,7 +226,7 @@ module Muwu
 
 
       def determine_heading_from_file_haml
-        first_line = File.open(@text_item.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
+        first_line = File.open(@topic.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
         if first_line =~ RegexpLib.haml_heading
           determine_heading_from_file_haml_first_line(first_line)
         else
@@ -243,7 +243,7 @@ module Muwu
 
 
       def determine_heading_from_file_md
-        first_line = File.open(@text_item.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
+        first_line = File.open(@topic.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
         if first_line =~ RegexpLib.markdown_heading
           determine_heading_from_file_md_first_line(first_line)
         else
@@ -266,7 +266,7 @@ module Muwu
         elsif @project.text_block_naming_is_not_simple
           path_from_project_home.concat(@parent_manifest_text.naming_downcase)
         end
-        safe_path_from_project_home = SanitizerHelper.sanitize_text_item_path(path_from_project_home)
+        safe_path_from_project_home = SanitizerHelper.sanitize_topic_path(path_from_project_home)
         safe_path_from_project_home
       end
 
@@ -283,7 +283,7 @@ module Muwu
 
 
       def outline_step_sanitized
-        SanitizerHelper.sanitize_text_item_path(outline_step)
+        SanitizerHelper.sanitize_topic_path(outline_step)
       end
 
 

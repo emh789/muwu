@@ -75,15 +75,15 @@ module Muwu
           child_section_numbering = section_number_extend(@text.numbering)
           child_steps.each do |step|
             child_section_numbering = section_number_find(child_section_numbering, step)
-            sections << build_text_item(step, child_section_numbering)
+            sections << build_topic(step, child_section_numbering)
           end
         end
         sections
       end
   
   
-      def build_text_item(step, section_numbering)
-        ManifestTaskBuilders::TextItemBuilder.build do |b|
+      def build_topic(step, section_numbering)
+        ManifestTaskBuilders::TopicBuilder.build do |b|
           b.build_from_outline_fragment_text(step, section_numbering, @text)
         end
       end

@@ -1,6 +1,6 @@
 module Muwu
   module RenderHtmlPartialBuilder
-    class TextItemBuilder
+    class TopicBuilder
 
 
       include Muwu
@@ -16,14 +16,14 @@ module Muwu
 
 
       def initialize
-        @renderer = RenderHtmlPartial::TextItem.new
+        @renderer = RenderHtmlPartial::Topic.new
       end
 
 
-      def build_from_manifest_text_item(manifest_text_item)
-        @manifest_text_item = manifest_text_item
-        @project = manifest_text_item.project
-        @href_helper = Helper::HtmlHrefHelper.new(manifest_text_item)
+      def build_from_manifest_topic(manifest_topic)
+        @manifest_topic = manifest_topic
+        @project = manifest_topic.project
+        @href_helper = Helper::HtmlHrefHelper.new(manifest_topic)
         phase_1_set_commonmarker_options
         phase_1_set_destination
         phase_1_set_heading
@@ -59,88 +59,88 @@ module Muwu
 
 
       def phase_1_set_destination
-        @renderer.destination = @manifest_text_item.destination
+        @renderer.destination = @manifest_topic.destination
       end
 
 
       def phase_1_set_does_have_source_text
-        if @manifest_text_item.source_file_does_exist
+        if @manifest_topic.source_file_does_exist
           @renderer.does_have_source_text = true
-        elsif @manifest_text_item.source_file_does_not_exist
+        elsif @manifest_topic.source_file_does_not_exist
           @renderer.does_have_source_text = false
         end
       end
 
 
       def phase_1_set_heading
-        @renderer.heading = @manifest_text_item.heading
+        @renderer.heading = @manifest_topic.heading
       end
 
 
       def phase_1_set_heading_origin
-        @renderer.heading_origin = @manifest_text_item.heading_origin
+        @renderer.heading_origin = @manifest_topic.heading_origin
       end
 
 
       def phase_1_set_is_parent_heading
-        @renderer.is_parent_heading = @manifest_text_item.is_parent_heading
+        @renderer.is_parent_heading = @manifest_topic.is_parent_heading
       end
 
 
       def phase_1_set_numbering
-        @renderer.numbering = @manifest_text_item.numbering
+        @renderer.numbering = @manifest_topic.numbering
       end
 
 
       def phase_1_set_section_depth
-        @renderer.section_depth = @manifest_text_item.section_depth
+        @renderer.section_depth = @manifest_topic.section_depth
       end
 
 
       def phase_1_set_section_number_as_attr
-        @renderer.section_number_as_attr = @manifest_text_item.numbering.join('_')
+        @renderer.section_number_as_attr = @manifest_topic.numbering.join('_')
       end
 
 
       def phase_1_set_section_number_as_text
-        @renderer.section_number_as_text = @manifest_text_item.numbering.join('.')
+        @renderer.section_number_as_text = @manifest_topic.numbering.join('.')
       end
 
 
       def phase_1_set_text_root_name
-        @renderer.text_root_name = @manifest_text_item.text_root_name
+        @renderer.text_root_name = @manifest_topic.text_root_name
       end
 
 
       def phase_2_set_source_filename_absolute
-        if @manifest_text_item.source_file_does_exist
-          @renderer.source_filename_absolute = @manifest_text_item.source_filename_absolute
+        if @manifest_topic.source_file_does_exist
+          @renderer.source_filename_absolute = @manifest_topic.source_filename_absolute
         end
       end
 
 
       def phase_2_set_source_filename_relative
-        if @manifest_text_item.source_file_does_exist
-          @renderer.source_filename_relative = @manifest_text_item.source_filename_relative
+        if @manifest_topic.source_file_does_exist
+          @renderer.source_filename_relative = @manifest_topic.source_filename_relative
         end
       end
 
 
       def phase_3_set_sections
-        if @manifest_text_item.does_have_child_sections
+        if @manifest_topic.does_have_child_sections
           @renderer.sections = determine_sections
         end
       end
 
 
       def phase_3_set_source_relative_segments
-        segments = @manifest_text_item.source_filename_relative.split('/')
+        segments = @manifest_topic.source_filename_relative.split('/')
         segments.last.gsub!(/\.[\w\.]*\z/,'')
         @renderer.source_relative_segments = segments
       end
 
       def phase_4_set_end_links
-        if text_item_should_have_end_links
+        if topic_should_have_end_links
           @renderer.end_links = determine_end_links
         end
       end
@@ -152,7 +152,7 @@ module Muwu
 
 
       def phase_4_set_will_render_section_number
-        @renderer.will_render_section_number = determine_whether_text_item_will_render_section_number
+        @renderer.will_render_section_number = determine_whether_topic_will_render_section_number
       end
 
 
@@ -165,9 +165,9 @@ module Muwu
       private
 
 
-      def build_renderer_text_item(text_item)
-        RenderHtmlPartialBuilder::TextItemBuilder.build do |b|
-          b.build_from_manifest_text_item(text_item)
+      def build_renderer_topic(topic)
+        RenderHtmlPartialBuilder::TopicBuilder.build do |b|
+          b.build_from_manifest_topic(topic)
         end
       end
 
@@ -186,7 +186,7 @@ module Muwu
       def determine_end_links_href(link)
         case link
         when 'contents'
-          @href_helper.to_contents_heading(@manifest_text_item)
+          @href_helper.to_contents_heading(@manifest_topic)
         when 'home'
           @href_helper.to_project_home
         when 'top'
@@ -197,15 +197,15 @@ module Muwu
 
       def determine_sections
         sections = []
-        @manifest_text_item.sections.each do |section|
-          sections << build_renderer_text_item(section)
+        @manifest_topic.sections.each do |section|
+          sections << build_renderer_topic(section)
         end
         sections
       end
 
 
       def determine_whether_subsections_are_distinct
-        if @manifest_text_item.does_have_child_sections
+        if @manifest_topic.does_have_child_sections
           if @project.options.render_sections_distinctly_depth_max == nil
             return true
           elsif @renderer.section_depth < @project.options.render_sections_distinctly_depth_max
@@ -217,14 +217,14 @@ module Muwu
       end
 
 
-      def determine_whether_text_item_will_render_section_number
-        if @project.will_render_section_numbers && text_item_should_be_distinct
+      def determine_whether_topic_will_render_section_number
+        if @project.will_render_section_numbers && topic_should_be_distinct
           true
         end
       end
 
 
-      def text_item_should_be_distinct
+      def topic_should_be_distinct
         if @project.options.render_sections_distinctly_depth_max == nil
           return true
         elsif @renderer.section_depth <= @project.options.render_sections_distinctly_depth_max
@@ -235,34 +235,34 @@ module Muwu
       end
 
 
-      def text_item_should_have_end_links
-        if text_item_should_be_distinct
-          return text_item_distinct_should_have_end_links
+      def topic_should_have_end_links
+        if topic_should_be_distinct
+          return topic_distinct_should_have_end_links
         else
           return false
         end
       end
 
 
-      def text_item_distinct_should_have_end_links
+      def topic_distinct_should_have_end_links
         if @renderer.is_parent_heading
-          return text_item_distinct_parent_should_have_end_links
+          return topic_distinct_parent_should_have_end_links
         elsif @renderer.does_have_source_text
           return true
         end
       end
 
 
-      def text_item_distinct_parent_should_have_end_links
+      def topic_distinct_parent_should_have_end_links
         if @renderer.does_have_source_text == true
           return true
         elsif @renderer.does_have_source_text == false
-          return text_item_distinct_parent_without_source_should_have_end_links
+          return topic_distinct_parent_without_source_should_have_end_links
         end
       end
 
 
-      def text_item_distinct_parent_without_source_should_have_end_links
+      def topic_distinct_parent_without_source_should_have_end_links
         if determine_whether_subsections_are_distinct == true
           return false
         elsif determine_whether_subsections_are_distinct == false

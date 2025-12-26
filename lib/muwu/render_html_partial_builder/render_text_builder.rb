@@ -68,15 +68,15 @@ module Muwu
       def determine_sections
         sections = []
         @manifest_text.sections.each do |section|
-          sections << build_text_item(section)
+          sections << build_topic(section)
         end
         sections
       end
 
 
-      def build_text_item(text_item)
-        RenderHtmlPartialBuilder::TextItemBuilder.build do |b|
-          b.build_from_manifest_text_item(text_item)
+      def build_topic(topic)
+        RenderHtmlPartialBuilder::TopicBuilder.build do |b|
+          b.build_from_manifest_topic(topic)
         end
       end
 

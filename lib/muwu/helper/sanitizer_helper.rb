@@ -14,22 +14,22 @@ module Muwu
       end
       
       
-      def sanitize_text_item_basename(basename)
+      def sanitize_topic_basename(basename)
         basename.to_s.gsub(RegexpLib.path_two_or_more_dots,'_')
       end
       
             
-      def sanitize_text_item_path(path)
+      def sanitize_topic_path(path)
         case path
         when Array
-          return path.map { |p| sanitize_text_item_path_segment(p) }
+          return path.map { |p| sanitize_topic_path_segment(p) }
         when Integer, String
-          return sanitize_text_item_path_segment(path)
+          return sanitize_topic_path_segment(path)
         end
       end
       
       
-      def sanitize_text_item_path_segment(path)
+      def sanitize_topic_path_segment(path)
         path.to_s.downcase.gsub(/\s/,'_').gsub(/\W/,'').gsub(/_{2,}/,'_')
       end
     

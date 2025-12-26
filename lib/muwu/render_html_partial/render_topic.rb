@@ -1,6 +1,6 @@
 module Muwu
   module RenderHtmlPartial
-    class TextItem
+    class Topic
 
 
       include Muwu

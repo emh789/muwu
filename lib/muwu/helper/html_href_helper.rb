@@ -21,7 +21,7 @@ module Muwu
       public
       
       
-      def to_text_item(text_object)
+      def to_topic(text_object)
         result = ''
         case @origin_task
         when ManifestTask::Contents
@@ -36,7 +36,7 @@ module Muwu
       def to_contents_heading(text_object)
         result = ''
         case @origin_task
-        when ManifestTask::TextItem
+        when ManifestTask::Topic
           filename = target_contents_filename(text_object)
           anchor_id = attr_id(:contents, text_object)
           result = filename + anchor_id

@@ -54,10 +54,10 @@ module Muwu
       end
     
     
-      def render_ol(text_item)
+      def render_ol(topic)
         write_tag_ol_open
         @destination.margin_indent do 
-          text_item.each do |section|
+          topic.each do |section|
             render_ol_li(section)
           end
         end
@@ -65,38 +65,38 @@ module Muwu
       end
   
   
-      def render_ol_li(text_item)
-        if task_depth_is_within_range(text_item)
-          if text_item.is_parent_heading
+      def render_ol_li(topic)
+        if task_depth_is_within_range(topic)
+          if topic.is_parent_heading
             write_tag_li_open
             @destination.margin_indent do 
-              render_ol_li_heading_and_subsections(text_item)
+              render_ol_li_heading_and_subsections(topic)
             end
             write_tag_li_close_outline
-          elsif text_item.is_not_parent_heading
+          elsif topic.is_not_parent_heading
             write_tag_li_open
-            render_ol_li_heading(text_item)
+            render_ol_li_heading(topic)
             write_tag_li_close_inline
           end
         end
       end
   
   
-      def render_ol_li_heading(text_item)
-        render_tag_a_section_heading(text_item)
+      def render_ol_li_heading(topic)
+        render_tag_a_section_heading(topic)
       end
   
   
-      def render_ol_li_heading_and_subsections(text_item)
-        render_tag_a_section_heading(text_item, trailing_line_feed: true)
-        render_ol(text_item.sections)
+      def render_ol_li_heading_and_subsections(topic)
+        render_tag_a_section_heading(topic, trailing_line_feed: true)
+        render_ol(topic.sections)
       end
 
 
-      def render_table(text_item)
+      def render_table(topic)
         write_tag_table_open
         @destination.margin_indent do 
-          text_item.each do |section|
+          topic.each do |section|
             render_table_tr(section)
           end
         end
@@ -122,34 +122,34 @@ module Muwu
       end
   
 
-      def render_table_tr_td_heading(text_item)
+      def render_table_tr_td_heading(topic)
         write_tag_td_open(attr_list: "class='heading'")
-        render_tag_a_section_heading(text_item)
+        render_tag_a_section_heading(topic)
         write_tag_td_close_inline
       end
   
 
-      def render_table_tr_td_heading_and_subsections(text_item)
+      def render_table_tr_td_heading_and_subsections(topic)
         write_tag_td_open(attr_list: "class='heading'")
-        render_tag_a_section_heading(text_item, trailing_line_feed: true)
+        render_tag_a_section_heading(topic, trailing_line_feed: true)
         @destination.margin_indent do
-          render_table(text_item.sections)
+          render_table(topic.sections)
         end
         write_tag_td_close_outline
       end
 
 
-      def render_table_tr_td_number(text_item)
+      def render_table_tr_td_number(topic)
         write_tag_td_open(attr_list: "class='number'")
-        render_tag_a_section_number(text_item, attr_list: "tabindex='-1'")
+        render_tag_a_section_number(topic, attr_list: "tabindex='-1'")
         write_tag_td_close_inline
       end
   
 
-      def render_tag_a_section_heading(text_item, trailing_line_feed: false)
-        href = @href_helper.to_text_item(text_item)
+      def render_tag_a_section_heading(topic, trailing_line_feed: false)
+        href = @href_helper.to_topic(topic)
         write_tag_a_open(href)
-        write_text_section_heading(text_item)
+        write_text_section_heading(topic)
         write_tag_a_close
         if trailing_line_feed
           write_lf
@@ -157,10 +157,10 @@ module Muwu
       end
   
 
-      def render_tag_a_section_number(text_item, attr_list: nil)
-        href = @href_helper.to_text_item(text_item)
+      def render_tag_a_section_number(topic, attr_list: nil)
+        href = @href_helper.to_topic(topic)
         write_tag_a_open(href, attr_list: attr_list)
-        write_text_section_number(text_item)
+        write_text_section_number(topic)
         write_tag_a_close
       end
   
