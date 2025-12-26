@@ -19,6 +19,7 @@ module Muwu
         :heading,
         :heading_origin,
         :html_attr_id,
+        :id,
         :is_parent_heading,
         :numbering,
         :project,
@@ -189,9 +190,9 @@ module Muwu
             data_source_class = []
             @source_relative_segments.each_index do |i|
               data_source_class << "#{source_relative_segments[i]}-#{node.name}"
-              # node["data-source-#{i}"] = "#{source_relative_segments[i]}-#{node.name}"
             end
             node['data-source-class'] = data_source_class.join(' ')
+            node['data-topic-class'] = "#{id}-#{node.name}"
           end
         end
         fragment.to_html

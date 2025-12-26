@@ -7,6 +7,9 @@ module Muwu
       include Helper
 
 
+      @@topic_id = 0
+
+
       attr_accessor(
         :heading_data,
         :numbering,
@@ -35,6 +38,7 @@ module Muwu
         @outline_fragment = outline_fragment
         @parent_manifest_text = parent_manifest_text
         @project = parent_manifest_text.project
+        phase_1_set_id
         phase_1_set_project
         phase_2_set_source_filename
         phase_3_set_heading
@@ -43,6 +47,12 @@ module Muwu
         phase_4_set_numbering
         phase_5_set_sections
         phase_6_validate_file_presence
+      end
+
+
+      def phase_1_set_id
+        @topic.id = @@topic_id
+        @@topic_id = @@topic_id + 1
       end
 
 

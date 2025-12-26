@@ -24,6 +24,7 @@ module Muwu
         @manifest_topic = manifest_topic
         @project = manifest_topic.project
         @href_helper = Helper::HtmlHrefHelper.new(manifest_topic)
+        phase_1_set_id
         phase_1_set_commonmarker_options
         phase_1_set_destination
         phase_1_set_heading
@@ -79,6 +80,11 @@ module Muwu
 
       def phase_1_set_heading_origin
         @renderer.heading_origin = @manifest_topic.heading_origin
+      end
+
+
+      def phase_1_set_id
+        @renderer.id = @manifest_topic.id
       end
 
 

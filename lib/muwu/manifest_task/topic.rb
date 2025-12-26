@@ -10,6 +10,7 @@ module Muwu
         :destination,
         :heading,
         :heading_origin,
+        :id,
         :naming,
         :numbering,
         :outline,
