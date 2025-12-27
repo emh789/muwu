@@ -145,6 +145,7 @@ module Muwu
         @renderer.source_relative_segments = segments
       end
 
+
       def phase_4_set_end_links
         if topic_should_have_end_links
           @renderer.end_links = determine_end_links
