@@ -1,9 +1,23 @@
 @media (prefers-color-scheme: dark) {
-  html {
-    color: #fffff8;
-    background-color: #101010;
+  body {
+    color: #e4e4e4;
+    background-color: #141414;
   }
-
+  *:focus {
+    background-color: rgba(255, 255, 0, 0.15);
+    outline-color: rgba(255, 255, 0, 0.3);
+    outline-style: solid;
+    outline-width: 2px;
+  }
+  a {
+    color: #bbccff;
+  }
+  a:visited {
+    color: #ccbbff;
+  }
+  a:active {
+    color: #ffbbcc;
+  }
   div.contents .document_link {
     color: #f8fff0;
   }
@@ -16,17 +30,11 @@
   div.text .document_link {
     color: #f8fff0;
   }
-
-  //  a {
-  //    color: inherit;
-  //  }
-
   img {
     border-width: 0px;
     border-color: #7f7f7f;
     border-style: solid;
   }
-
   pre {
     background-color: #000000;
     border: 1px #7f7f7f solid;

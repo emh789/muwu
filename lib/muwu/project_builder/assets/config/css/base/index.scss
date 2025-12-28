@@ -2,9 +2,10 @@
 @import 'section_muwu_contents';
 @import 'section_muwu_metadata';
 @import 'section_muwu_navigator';
+@import 'section_muwu_subcontents';
 @import 'section_muwu_text';
 @import 'section_muwu_title';
-@import 'section_muwu_subcontents';
+@import 'section_muwu_topic';
 
 // A better approach to CSS would be to assign classes to elements via the
 // html renderer. Until such functionality exists, messy selector chaining

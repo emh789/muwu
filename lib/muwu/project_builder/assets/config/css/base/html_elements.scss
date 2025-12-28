@@ -20,57 +20,64 @@
 // can successfully rely on `content-box` sizing.
 //
 
-$muwu-root-font-size: 1rem;
-$muwu-root-line-height: ($muwu-root-font-size * 1.16667);
+$font-size: 1em;
+$font-size-code: ($font-size * 0.9);
+
+$header-factor: 0.125em;
+$font-size-h1: ($font-size + ($header_factor * 4));
+$font-size-h2: ($font-size + ($header_factor * 3));
+$font-size-h3: ($font-size + ($header_factor * 2));
+$font-size-h-default: $font-size-h3;
+
+$line-height: ($font-size * 1.333);
+
+$margin: $line-height;
+$margin-double: ($margin * 2);
+$margin-triple: ($margin * 3);
+$margin-half: ($margin / 2);
+$margin-quarter: ($margin / 4);
+$margin-tenth: ($margin / 10);
+$margin-contents-subtable: ($margin-quarter);
 
 * {
   box-sizing: content-box;
-  font-size: $muwu-root-font-size;
-  line-height: $muwu-root-line-height;
+  line-height: $line-height;
   margin: 0;
   padding: 0;
   text-indent: 0;
-}
-
-
-html {
-  width: 100%;
+  font-size: $font-size;
 }
 
 body {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 50rem;
+  font-family: sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  padding: $margin-double;
 }
 
 blockquote {
-  margin: $muwu-root-line-height 2rem;
+  margin: $margin $margin-double;
 }
 
 code {
-  font-size: $muwu-root-font-size;
-  padding: 0rem 0.15rem;
+  font-size: ($font-size * 0.9);
+  padding: 0 $margin-tenth;
 }
 
 dl {
-  margin: $muwu-root-line-height 0;
-  div {
-    dt {
-      display: list-item;
-      list-style-type: none;
-      font-weight: bold;
-      p {
-        display: inline;
-      }
-    }
-    dd {
-      display: list-item;
-      list-style-type: none;
-      p {
-        display: inline;
-      }
-    }
-  }
+  margin: $margin 0;
+}
+
+dt {
+  display: list-item;
+  list-style-type: none;
+  font-weight: bold;
+  margin-top: $margin;
+}
+
+dd {
+  display: list-item;
+  list-style-type: none;
 }
 
 img {
@@ -80,33 +87,31 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-size: ($muwu-root-font-size * 1.125);
-  margin: $muwu-root-line-height 0rem;
+  margin: $margin 0;
+  font-size: $font-size-h-default;
 }
 
 hr {
-  margin: $muwu-root-line-height 0;
+  margin: $margin 0;
   border-width: 0;
 }
 
+main {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 50rem;
+}
 ol {
-  margin: $muwu-root-line-height;
-  ol, ul {
-    margin: 0rem 1rem;
-  }
+  margin: 0 $margin;
+  padding: 0 $margin;
 }
 
 p {
-  margin: $muwu-root-line-height 0rem;
+  margin: $margin 0rem;
 }
 
 pre {
-  font-size: ($muwu-root-font-size * 0.9);
-  margin: $muwu-root-line-height 0;
-  >code {
-    font-size: ($muwu-root-font-size * 0.8);
-    padding: 0rem 0rem;
-  }
+  margin: $margin 0;
 }
 
 q {
@@ -114,29 +119,19 @@ q {
 }
 
 ul {
-  margin: $muwu-root-line-height;
-  ol, ul {
-    margin: 0rem 1rem;
-  }
+  margin: 0 $margin;
+  padding: 0 $margin;
 }
 
 
 
 
 @media screen {
-  html {
-    body {
-      padding: 1.5rem;
-    }
-  }
 }
 
+
 @media print {
-  html {
-    body {
-      ol, ul {
-        page-break-inside: avoid;
-      }
-    }
+  ol, ul {
+    page-break-inside: avoid;
   }
 }

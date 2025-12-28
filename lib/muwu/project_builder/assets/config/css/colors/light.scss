@@ -1,9 +1,16 @@
 @media (prefers-color-scheme: light) {
-  html {
+  body {
     background-color: #f4f4f0;
     color: #080808;
   }
-
+  *:focus {
+    background-color: rgba(196, 196, 0, 0.3);
+    outline-style: solid;
+    outline-color: rgba(128, 128, 0, 0.3);
+  }
+  a {
+    color: inherit;
+  }
   div.contents .document_link {
     color: #002040;
   }
@@ -16,17 +23,11 @@
   div.text .document_link {
     color: #002040;
   }
-
-  //  a {
-  //    color: inherit;
-  //  }
-
   img {
     border-width: 0px;
     border-color: #000000;
     border-style: solid;
   }
-
   pre {
     background-color: #fcfcfc;
     border: 1px #e0e0e0 solid;

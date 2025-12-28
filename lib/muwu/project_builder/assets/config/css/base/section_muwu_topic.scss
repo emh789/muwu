@@ -1,0 +1,37 @@
+[data-document-block='topic'] {
+  margin: $margin-triple 0rem;
+}
+[data-topic='section-number'] {
+  font-weight: bold;
+  margin-bottom: $margin-half;
+}
+[data-topic='section-heading'] {
+  font-weight: bold;
+  margin-bottom: $margin;
+}
+[data-depth='1'][data-topic='section-heading'] {
+  font-size: $font-size-h1;
+}
+[data-depth='1'][data-topic='section-number'] {
+  font-size: $font-size-h1;
+}
+[data-depth='2'][data-topic='section-heading'] {
+  font-size: 1.375em;
+}
+[data-depth='2'][data-topic='section-number'] {
+  font-size: 1.375em;
+}
+[data-depth='3'][data-topic='section-heading'] {
+  font-size: 1.25em;
+}
+[data-depth='3'][data-topic='section-number'] {
+  font-size: 1.25em;
+}
+[data-topic='navigation'] {
+  margin: $margin 0;
+  text-align: right;
+}
+[data-topic='navigation-link'] {
+  font-size: 0.8em;
+  margin: 0 $margin-half;
+}

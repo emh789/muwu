@@ -1,58 +1,36 @@
-body >div.contents {
-  margin: ($muwu-root-line-height * 4) 0;
-  >h1 {
-    font-size: ($muwu-root-font-size * 1.25);
-    margin: 0 0 ($muwu-root-line-height * 2) 0;
-    text-align: left;
-  }
-  .compiler_warning {
-    background-color: #ffa;
-    td {
-      a {
-        color: #A00;
-      }
-    }
-  }
-  >table {
-    border-collapse: collapse;
-    tr {
-      td {
-        vertical-align: top;
-        padding: 0.3rem 0.4rem;
-        table {
-          border-collapse: collapse;
-          margin-top: 0.2rem;
-          margin-bottom: -0.2rem;
-        }
-      }
-      td:first-child {
-        padding-left: 0rem;
-      }
-      td:last-child {
-        padding-right: 0rem;
-      }
-      td.heading {
-        text-align: left;
-      }
-      td.number {
-        text-align: right;
-      }
-    }
-  }
-  >ol {
-    list-style-type: none;
-    display: block;
-    margin: 0rem;
-    li {
-      margin: ($muwu-root-line-height * 0.5) 0rem;
-      a {
-        display: inline;
-      }
-      ol {
-        list-style-type: none;
-        display: block;
-        margin: 0rem 1rem;
-      }
-    }
-  }
+[data-document-block='contents'] {
+  margin: $margin-triple 0;
+}
+[data-contents='heading'] {
+  font-size: $font-size-h1;
+  margin-bottom: $margin;
+  text-align: left;
+}
+[data-contents='list'] {
+  list-style-type: none;
+  display: block;
+  margin: 0rem;
+}
+[data-contents='list-topic'] {
+  margin: $margin-half 0rem;
+}
+[data-contents='list-topic'] > [data-contents='list'] {
+  margin: 0 $margin;
+}
+[data-contents='table'] {
+  border-collapse: collapse;
+}
+[data-contents='table-number'] {
+  padding: $margin-quarter;
+  text-align: right;
+  vertical-align: top;
+}
+[data-contents='table-topic'] {
+  padding: $margin-quarter;
+  text-align: left;
+}
+[data-contents='table-topic'] > [data-contents='table'] {
+  border-collapse: collapse;
+  margin-top: $margin-contents-subtable;
+  margin-bottom: -($margin-contents-subtable);
 }
