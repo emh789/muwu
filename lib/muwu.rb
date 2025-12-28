@@ -8,7 +8,6 @@ module Muwu
 
   require 'commonmarker'
   require 'fileutils'
-  require 'haml'
   require 'iso-639'
   require 'logger'
   require 'nokogiri'

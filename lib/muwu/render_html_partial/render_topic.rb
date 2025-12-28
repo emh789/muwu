@@ -6,7 +6,6 @@ module Muwu
       include Muwu
 
       require 'commonmarker'
-      require 'haml'
       require 'nokogiri'
 
 
@@ -164,22 +163,10 @@ module Muwu
 
       def source_to_html
         case File.extname(@source_filename_absolute).downcase
-        when '.haml'
-          source_to_html_from_haml
         when '.md'
           source_to_html_from_md
         end
       end
-
-
-      def source_to_html_from_haml
-        Haml::Engine.new(File.read(@source_filename_absolute), {suppress_eval: true}).render
-      end
-
-
-      # def source_to_html_from_md
-      #   Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
-      # end
 
 
       def source_to_html_from_md

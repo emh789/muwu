@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 3.3'
   s.add_runtime_dependency 'commonmarker', '=> 0.23.10'
-  s.add_runtime_dependency 'haml', '=> 7.1'
   s.add_runtime_dependency 'iso-639', '=> 0.3.7'
   s.add_runtime_dependency 'nokogiri', '=> 1.16.0'
   s.add_runtime_dependency 'sassc', '=> 2.4.0'

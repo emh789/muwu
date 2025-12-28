@@ -163,30 +163,13 @@ module Muwu
         end
       end
 
-      # TODO: This method looks obsolete. Find its references.
+
       def determine_source_filename_implicitly
-        # filename = make_filename_implicitly(outline_step)
-        # filepath = make_filepath_implicitly
-        # File.join([filepath, filename].flatten)
-        determine_source_filename_cascade_implicitly
-      end
-
-
-      def determine_source_filename_cascade_implicitly
         source_filename = ''
         file_path = make_filepath_implicitly
         file_basename = SanitizerHelper.sanitize_topic_path(outline_step)
         file_name_md = file_basename + '.md'
-        file_name_haml = file_basename + '.haml'
-        file_attempt_md = File.join([file_path, file_name_md].flatten)
-        file_attempt_haml = File.join([file_path, file_name_haml].flatten)
-        if File.exist?(file_attempt_md)
-          source_filename = file_attempt_md
-        elsif File.exist?(file_attempt_haml)
-          source_filename = file_attempt_haml
-        else
-          source_filename = file_attempt_md
-        end
+        source_filename = File.join([file_path, file_name_md].flatten)
         source_filename
       end
 
@@ -202,8 +185,6 @@ module Muwu
 
       def determine_heading_from_file
         case File.extname(@topic.source_filename_absolute).downcase
-        when '.haml'
-          determine_heading_from_file_haml
         when '.md'
           determine_heading_from_file_md
         else
@@ -235,23 +216,6 @@ module Muwu
       end
 
 
-      def determine_heading_from_file_haml
-        first_line = File.open(@topic.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
-        if first_line =~ RegexpLib.haml_heading
-          determine_heading_from_file_haml_first_line(first_line)
-        else
-          determine_heading_from_file_basename_or_outline
-        end
-      end
-
-
-      def determine_heading_from_file_haml_first_line(first_line)
-        heading = first_line.gsub(RegexpLib.haml_heading_plus_whitespace,'').strip
-        origin = :text_source
-        { heading: heading, origin: origin }
-      end
-
-
       def determine_heading_from_file_md
         first_line = File.open(@topic.source_filename_absolute, 'r') { |f| f.gets("\n").to_s }
         if first_line =~ RegexpLib.markdown_heading
@@ -279,7 +243,6 @@ module Muwu
         safe_path_from_project_home = SanitizerHelper.sanitize_topic_path(path_from_project_home)
         safe_path_from_project_home
       end
-
 
 
       def outline_step

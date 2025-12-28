@@ -1,25 +1,25 @@
 module Muwu
   module Helper
     class OutlineHelper
-      
-      
+
+
       include Muwu::Helper
-      
-      
+
+
       def initialize(outline_fragment)
         @outline_fragment = outline_fragment
       end
-      
-            
+
+
 
       public
-      
-      
+
+
       def includes_navigator
         indicates_navigator || includes_navigator_in_array
       end
-      
-      
+
+
       def includes_navigator_in_array
         (is_array) && (@outline_fragment.select{ |step| OutlineHelper.type_of(step) == :navigator }.any?)
       end
@@ -43,8 +43,8 @@ module Muwu
       def indicates_metadata
         indicates_metadata_hash || indicates_metadata_string
       end
-      
-      
+
+
       def indicates_metadata_hash
         (is_hash) && (RegexpLib.outline_metadata =~ @outline_fragment.flatten[0])
       end
@@ -58,8 +58,8 @@ module Muwu
       def indicates_navigator
         (is_string) && (RegexpLib.outline_navigator =~ @outline_fragment)
       end
-      
-      
+
+
       def indicates_outline_fragment
         is_array
       end
@@ -93,13 +93,13 @@ module Muwu
       def indicates_title_hash
         (is_hash) && (RegexpLib.outline_title =~ @outline_fragment.flatten[0])
       end
-      
-      
+
+
       def indicates_title_string
         (is_string) && (RegexpLib.outline_title =~ @outline_fragment)
       end
-      
-      
+
+
       def is_array
         Array === @outline_fragment
       end
@@ -123,8 +123,6 @@ module Muwu
       def text_step_flexible_suggests_file
         if @outline_fragment.to_s =~ RegexpLib.file_ext_md
           true
-        elsif @outline_fragment.to_s =~ RegexpLib.file_ext_haml
-          true
         else
           false
         end
@@ -133,8 +131,8 @@ module Muwu
 
 
       protected
-      
-      
+
+
       def self.type_of(step)
         s = new(step)
         if s.indicates_contents
@@ -153,7 +151,7 @@ module Muwu
           :title
         end
       end
-            
+
 
     end
   end
