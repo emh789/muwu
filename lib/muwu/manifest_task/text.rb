@@ -3,15 +3,15 @@ module Muwu
     class Text
 
 
-      attr_accessor(      
-        :destination, 
+      attr_accessor(
+        :destination,
         :naming,
         :numbering,
         :project,
         :sections
       )
-      
-      
+
+
       def inspect
         ["#{self.to_s}", "{", inspect_instance_variables, "}"].join(' ')
       end
@@ -19,23 +19,23 @@ module Muwu
 
       def inspect_instance_variables
         self.instance_variables.map { |v| "#{v}=#<#{instance_variable_get(v).class}>" }.join(", ")
-      end    
+      end
 
-      
-      
+
+
       public
 
-  
+
       def naming_downcase
         @naming.map {|n| n.downcase}
       end
-  
-  
+
+
       def naming_downcase_without_text_root
         naming_without_text_root.map {|n| n.downcase}
       end
-  
-  
+
+
       def naming_without_text_root
         @naming[1..-1]
       end

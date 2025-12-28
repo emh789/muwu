@@ -4,10 +4,10 @@ module Muwu
 
 
       include Muwu
-      
-      
+
+
       attr_accessor(
-        :destination, 
+        :destination,
         :html_attr_id,
         :project,
         :text_root_name,
@@ -15,7 +15,7 @@ module Muwu
         :will_render_end_links,
         :will_render_section_numbers
       )
-    
+
 
       def render
         @destination.padding_vertical(1) do
@@ -65,8 +65,8 @@ module Muwu
 
 
       def tag_div_open
-        "<div class='text' data-text_root_name='#{@text_root_name}' id='#{@html_attr_id}'>"
-      end            
+        "<div data-document-block='text' data-text_root_name='#{@text_root_name}' id='#{@html_attr_id}'>"
+      end
 
 
     end

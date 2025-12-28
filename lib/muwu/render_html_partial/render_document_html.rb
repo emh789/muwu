@@ -293,12 +293,12 @@ module Muwu
 
 
       def tag_body_close
-        "</body>"
+        "</main></body>"
       end
 
 
       def tag_body_open
-        "<body>"
+        "<body><main>"
       end
 
 

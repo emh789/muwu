@@ -185,31 +185,39 @@ module Muwu
       def source_to_html_from_md
         fragment = Nokogiri::HTML5.fragment(source_md_to_html)
         fragment.css('a.anchor[aria-hidden]').each { |node| node.remove }
-        %w(blockquote dl h1 h2 h3 h4 h5 h6 ol p pre table ul).each do |element|
+
+        starting_heading = nil
+        if fragment.children.any? && fragment.children.first.name =~ /\Ah\d{1}\z/i
+          starting_heading = fragment.first_element_child.remove
+          starting_heading['data-topic'] = 'section-heading'
+          starting_heading['data-depth'] = @section_depth
+        end
+
+        %w(blockquote dd dl dt h1 h2 h3 h4 h5 h6 li ol p pre table td tr ul).each do |element|
           fragment.css(element).each do |node|
             data_source_class = []
             @source_relative_segments.each_index do |i|
               data_source_class << "#{source_relative_segments[i]}-#{node.name}"
             end
-            node['data-source-class'] = data_source_class.join(' ')
-            node['data-topic-class'] = "#{id}-#{node.name}"
+            node['data-topic-source-class'] = data_source_class.join(' ')
+            node['data-topic-id-class'] = "#{id}-#{node.name}"
           end
+        end
+
+        if starting_heading
+          fragment.children.first.previous = starting_heading
         end
         fragment.to_html
       end
+
 
       def source_md_to_html
         Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
       end
 
 
-      def source_parsed_classed
-
-      end
-
-
       def tag_nav_a(name, href)
-        "<a class='document_link' href='#{href}'>[#{name}]</a>"
+        "<a data-topic='navigation-link' href='#{href}'>[#{name}]</a>"
       end
 
 
@@ -224,7 +232,7 @@ module Muwu
 
 
       def tag_nav_end_links_open
-        "<nav class='document_links'>"
+        "<nav data-topic='navigation'>"
       end
 
 
@@ -234,7 +242,7 @@ module Muwu
 
 
       def tag_heading
-        "<h1>#{@heading}</h1>"
+        "<div data-topic='section-heading' data-depth='#{@section_depth}'>#{@heading}</div>"
       end
 
 
@@ -244,17 +252,7 @@ module Muwu
 
 
       def tag_section_open
-        "<section data-section_depth='#{@section_depth}' data-section_number='#{@section_number_as_text}' data-source='#{@source_filename_relative}' id='#{@html_attr_id}'>"
-      end
-
-
-      def tag_section_with_source_open
-        "<section data-section_depth='#{@section_depth}' data-section_number='#{@section_number_as_text}' data-source='#{@source_filename_relative}' id='#{@html_attr_id}'>"
-      end
-
-
-      def tag_section_without_source_open
-        "<section data-section_depth='#{@section_depth}' data-section_number='#{@section_number_as_text}' id='#{@html_attr_id}'>"
+        "<section data-document-block='topic' data-depth='#{@section_depth}' data-number='#{@section_number_as_text}' data-source='#{@source_filename_relative}' id='#{@html_attr_id}'>"
       end
 
 
@@ -264,7 +262,7 @@ module Muwu
 
 
       def tag_span_section_number
-        "<h1 class='section_number'>#{@section_number_as_text}</h1>"
+        "<div data-topic='section-number' data-depth='#{@section_depth}'>#{@section_number_as_text}</div>"
       end
 
 
