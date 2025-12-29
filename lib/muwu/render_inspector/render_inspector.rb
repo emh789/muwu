@@ -190,8 +190,8 @@ module Muwu
         indent('Text'),
         text.naming.inspect
       ]
-      text.sections.each do |section|
-        render_inspector_manifest_task(section)
+      text.topics.each do |topic|
+        render_inspector_manifest_task(topic)
       end
     end
 
@@ -204,9 +204,9 @@ module Muwu
         topic.source_filename,
         ('!!' if topic.source_file_does_not_exist)
       ]
-      if topic.does_have_child_sections
-        topic.sections.each do |section|
-          render_inspector_manifest_task(section)
+      if topic.does_have_subtopics
+        topic.subtopics.each do |subtopic|
+          render_inspector_manifest_task(subtopic)
         end
       end
     end

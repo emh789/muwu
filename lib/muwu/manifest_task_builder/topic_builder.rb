@@ -45,7 +45,7 @@ module Muwu
         phase_4_set_destination
         phase_4_set_naming
         phase_4_set_numbering
-        phase_5_set_sections
+        phase_5_set_subtopics
         phase_6_validate_file_presence
       end
 
@@ -93,9 +93,9 @@ module Muwu
       end
 
 
-      def phase_5_set_sections
+      def phase_5_set_subtopics
         if Hash === @outline_fragment
-          @topic.sections = determine_sections
+          @topic.subtopics = determine_subtopics
         end
       end
 
@@ -121,17 +121,17 @@ module Muwu
       end
 
 
-      def determine_sections
-        sections = []
+      def determine_subtopics
+        subtopics = []
         child_steps = [@outline_fragment.flatten[1]].flatten
         if child_steps.empty? == false
           child_section_numbering = section_number_extend(@topic.numbering)
           child_steps.each do |step|
             child_section_numbering = section_number_increment(child_section_numbering)
-            sections << build_topic(step, child_section_numbering)
+            subtopics << build_topic(step, child_section_numbering)
           end
         end
-        sections
+        subtopics
       end
 
 

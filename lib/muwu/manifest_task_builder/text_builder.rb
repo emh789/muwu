@@ -35,15 +35,15 @@ module Muwu
         set_destination
         set_naming
         set_numbering
-        set_sections
+        set_topics
       end
 
-    
+
       def set_destination
         @text.destination = @parent_document.destination
       end
 
-  
+
       def set_naming
         @text.naming = [determine_text_block_name]
       end
@@ -52,15 +52,15 @@ module Muwu
       def set_numbering
         @text.numbering = []
       end
-        
+
 
       def set_project
         @text.project = @project
       end
-  
-  
-      def set_sections
-        @text.sections = build_sections
+
+
+      def set_topics
+        @text.topics = build_topics
       end
 
 
@@ -68,24 +68,24 @@ module Muwu
       private
 
 
-      def build_sections
-        sections = []
+      def build_topic(step, section_numbering)
+        ManifestTaskBuilders::TopicBuilder.build do |b|
+          b.build_from_outline_fragment_text(step, section_numbering, @text)
+        end
+      end
+
+
+      def build_topics
+        topics = []
         child_steps = determine_text_block_steps
         if child_steps.empty? == false
           child_section_numbering = section_number_extend(@text.numbering)
           child_steps.each do |step|
             child_section_numbering = section_number_find(child_section_numbering, step)
-            sections << build_topic(step, child_section_numbering)
+            topics << build_topic(step, child_section_numbering)
           end
         end
-        sections
-      end
-  
-  
-      def build_topic(step, section_numbering)
-        ManifestTaskBuilders::TopicBuilder.build do |b|
-          b.build_from_outline_fragment_text(step, section_numbering, @text)
-        end
+        topics
       end
 
 
@@ -98,8 +98,8 @@ module Muwu
         end
         text_block_name
       end
-  
-  
+
+
       def determine_text_block_steps
         @outline_text.flatten[1]
       end
@@ -111,15 +111,15 @@ module Muwu
         number_outgoing
       end
 
-      
+
       def section_number_find(number_incoming, step)
         number_outgoing = number_incoming.clone
         sorted_outline_steps = @project.outline_text_blocks_named(@text.text_root_name)
         number_outgoing[-1] = sorted_outline_steps.index(step) + 1
         number_outgoing
       end
-      
-  
+
+
     end
   end
 end

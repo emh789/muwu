@@ -15,8 +15,8 @@ module Muwu
         :numbering,
         :outline,
         :project,
-        :sections,
-        :source_filename
+        :source_filename,
+        :subtopics,
       )
 
 
@@ -34,8 +34,8 @@ module Muwu
       public
 
 
-      def does_have_child_sections
-        is_parent_heading && (@sections.length >= 1)
+      def does_have_subtopics
+        is_parent_heading && (@subtopics.length >= 1)
       end
 
 
@@ -45,7 +45,7 @@ module Muwu
 
 
       def is_parent_heading
-        Array === @sections
+        Array === @subtopics
       end
 
 
@@ -85,7 +85,7 @@ module Muwu
       end
 
 
-      def section_depth
+      def topic_depth
         @numbering.length
       end
 

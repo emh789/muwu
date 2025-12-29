@@ -38,7 +38,7 @@ module Muwu
         phase_1_set_text_root_name
         phase_2_set_source_filename_absolute
         phase_2_set_source_filename_relative
-        phase_3_set_sections
+        phase_3_set_subtopics
         phase_3_set_source_relative_segments
         phase_4_set_end_links
         phase_4_set_html_attr_id
@@ -99,7 +99,7 @@ module Muwu
 
 
       def phase_1_set_section_depth
-        @renderer.section_depth = @manifest_topic.section_depth
+        @renderer.section_depth = @manifest_topic.topic_depth
       end
 
 
@@ -132,9 +132,9 @@ module Muwu
       end
 
 
-      def phase_3_set_sections
-        if @manifest_topic.does_have_child_sections
-          @renderer.sections = determine_sections
+      def phase_3_set_subtopics
+        if @manifest_topic.does_have_subtopics
+          @renderer.subtopics = determine_subtopics
         end
       end
 
@@ -202,17 +202,17 @@ module Muwu
       end
 
 
-      def determine_sections
-        sections = []
-        @manifest_topic.sections.each do |section|
-          sections << build_renderer_topic(section)
+      def determine_subtopics
+        subtopics = []
+        @manifest_topic.subtopics.each do |subtopic|
+          subtopics << build_renderer_topic(subtopic)
         end
-        sections
+        subtopics
       end
 
 
       def determine_whether_subsections_are_distinct
-        if @manifest_topic.does_have_child_sections
+        if @manifest_topic.does_have_subtopics
           if @project.options.render_sections_distinctly_depth_max == nil
             return true
           elsif @renderer.section_depth < @project.options.render_sections_distinctly_depth_max

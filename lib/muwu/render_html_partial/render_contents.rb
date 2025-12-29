@@ -15,7 +15,7 @@ module Muwu
         :html_attr_id,
         :item_depth_max,
         :project,
-        :sections,
+        :topics,
         :text_root_name,
         :will_render_section_numbers
       )
@@ -30,20 +30,20 @@ module Muwu
         @destination.padding_vertical(1) do
           write_tag_div_open
           render_contents_heading
-          render_contents_element(@sections)
+          render_contents_element(@topics)
           write_tag_div_close
         end
         @destination.margin_to_zero
       end
 
 
-      def render_contents_element(sections)
+      def render_contents_element(topics)
         @destination.margin_indent do
           case @will_render_section_numbers
           when false
-            render_ol(sections)
+            render_ol(topics)
           when true
-            render_table(sections)
+            render_table(topics)
           end
         end
       end
@@ -89,7 +89,7 @@ module Muwu
 
       def render_ol_li_heading_and_subsections(topic)
         render_tag_a_section_heading(topic, trailing_line_feed: true)
-        render_ol(topic.sections)
+        render_ol(topic.subtopics)
       end
 
 
@@ -133,7 +133,7 @@ module Muwu
         write_tag_td_open(attr_list: "data-contents='table-topic'")
         render_tag_a_section_heading(topic, trailing_line_feed: true)
         @destination.margin_indent do
-          render_table(topic.sections)
+          render_table(topic.subtopics)
         end
         write_tag_td_close_outline
       end
@@ -354,13 +354,13 @@ module Muwu
       end
 
 
-      def task_depth_is_within_range(textobject)
+      def task_depth_is_within_range(topic)
         result = nil
         if @item_depth_max == nil
           result = true
-        elsif textobject.section_depth <= @item_depth_max
+        elsif topic.topic_depth <= @item_depth_max
           result = true
-        elsif textobject.section_depth > @item_depth_max
+        elsif topic.topic_depth > @item_depth_max
           result = false
         end
         result

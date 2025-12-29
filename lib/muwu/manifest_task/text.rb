@@ -8,7 +8,7 @@ module Muwu
         :naming,
         :numbering,
         :project,
-        :sections
+        :topics
       )
 
 

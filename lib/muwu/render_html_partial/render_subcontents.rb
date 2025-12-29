@@ -30,7 +30,7 @@ module Muwu
           write_tag_div_open
           render_project_title
           @text_root_blocks.each do |text_root_block|
-            render_contents_element(text_root_block.sections)
+            render_contents_element(text_root_block.topics)
           end
           write_tag_div_close
         end
@@ -85,7 +85,7 @@ module Muwu
 
       def render_ol_li_heading_and_topics(topic)
         render_tag_a_section_heading(topic, trailing_line_feed: true)
-        render_ol(topic.sections)
+        render_ol(topic.subtopics)
       end
 
 
@@ -134,7 +134,7 @@ module Muwu
         write_tag_td_open(attr_list: "data-subcontents='table-topic'")
         render_tag_a_section_heading(topic, trailing_line_feed: true)
         @destination.margin_indent do
-          render_table(topic.sections)
+          render_table(topic.subtopics)
         end
         write_tag_td_close_outline
       end
@@ -359,9 +359,9 @@ module Muwu
         result = nil
         if @item_depth_max == nil
           result = true
-        elsif topic.section_depth <= @item_depth_max
+        elsif topic.topic_depth <= @item_depth_max
           result = true
-        elsif topic.section_depth > @item_depth_max
+        elsif topic.topic_depth > @item_depth_max
           result = false
         end
         result

@@ -11,7 +11,7 @@ module Muwu
         :html_attr_id,
         :project,
         :text_root_name,
-        :sections,
+        :topics,
         :will_render_end_links,
         :will_render_section_numbers
       )
@@ -20,16 +20,16 @@ module Muwu
       def render
         @destination.padding_vertical(1) do
           render_tag_div_open
-          render_sections
+          render_topics
           render_tag_div_close
         end
       end
 
 
-      def render_sections
+      def render_topics
         @destination.padding_vertical(1) do
-          @sections.each do |section|
-            section.render
+          @topics.each do |topic|
+            topic.render
           end
         end
       end

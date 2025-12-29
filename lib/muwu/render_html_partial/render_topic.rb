@@ -25,11 +25,11 @@ module Muwu
         :section_depth,
         :section_number_as_attr,
         :section_number_as_text,
-        :sections,
         :source_filename_absolute,
         :source_filename_relative,
         :source_relative_segments,
         :subsections_are_distinct,
+        :subtopics,
         :text_root_name,
         :will_render_section_number
       )
@@ -43,9 +43,9 @@ module Muwu
           render_text
           if (@is_parent_heading == true) && (@subsections_are_distinct == true)
             render_end_links
-            render_sections
+            render_subtopics
           elsif (@is_parent_heading == true) && (@subsections_are_distinct == false)
-            render_sections
+            render_subtopics
             render_end_links
           elsif (@is_parent_heading == false)
             render_end_links
@@ -85,10 +85,10 @@ module Muwu
       end
 
 
-      def render_sections
+      def render_subtopics
         @destination.padding_vertical(1) do
-          @sections.each do |section|
-            section.render
+          @subtopics.each do |subtopic|
+            subtopic.render
           end
         end
       end

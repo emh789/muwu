@@ -31,7 +31,7 @@ module Muwu
         set_destination
         set_project
         set_text_root_name
-        set_sections
+        set_topics
         finally_set_html_attr_id
       end
 
@@ -56,8 +56,8 @@ module Muwu
       end
 
 
-      def set_sections
-        @renderer.sections = determine_sections
+      def set_topics
+        @renderer.topics = determine_topics
       end
 
 
@@ -65,12 +65,12 @@ module Muwu
       private
 
 
-      def determine_sections
-        sections = []
-        @manifest_text.sections.each do |section|
-          sections << build_topic(section)
+      def determine_topics
+        topics = []
+        @manifest_text.topics.each do |topic|
+          topics << build_topic(topic)
         end
-        sections
+        topics
       end
 
 
