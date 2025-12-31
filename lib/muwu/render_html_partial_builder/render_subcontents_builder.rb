@@ -31,7 +31,6 @@ module Muwu
         @task_subcontents = task_subcontents
         @text_root_name = task_subcontents.text_root_name
         set_destination
-        set_href_helper
         set_html_attr_id
         set_item_depth_max
         set_project
@@ -45,13 +44,8 @@ module Muwu
       end
 
 
-      def set_href_helper
-        @renderer.href_helper = Helper::HtmlHrefHelper.new(@task_subcontents)
-      end
-
-
       def set_html_attr_id
-        @renderer.html_attr_id = ['subcontents'].join('_')
+        @renderer.html_attr_id = 'subcontents'
       end
 
 
@@ -63,7 +57,7 @@ module Muwu
       def set_project
         @renderer.project = @project
       end
-      
+
 
       def set_text_root_blocks
         @renderer.text_root_blocks = @task_subcontents.text_root_blocks
@@ -73,7 +67,7 @@ module Muwu
       def set_text_root_name
         @renderer.text_root_name = @text_root_name
       end
-      
+
 
       def set_will_render_section_numbers
         @renderer.will_render_section_numbers = @project.options.render_section_numbers

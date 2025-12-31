@@ -65,13 +65,12 @@ module Muwu
 
 
       def numbering_to_depth_max
-        # using a truthy conditional because the option could be an integer, nil, or a boolean false
         if @project.options.render_sections_distinctly_depth_max
           index_min = 0
           index_max = @project.options.render_sections_distinctly_depth_max - 1
           if index_max >= index_min
             @numbering[index_min..index_max]
-          else # fallback to @numbering so code doesn't break
+          else
             @numbering
           end
         else

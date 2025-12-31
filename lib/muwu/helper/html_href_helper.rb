@@ -1,101 +1,98 @@
 module Muwu
   module Helper
-    class HtmlHrefHelper
+    module HrefHelper
 
 
-      include Muwu
+      module_function
 
 
-      attr_accessor(
-        :origin_task,
-      )
-
-
-      def initialize(origin_task)
-        @origin_task = origin_task
-        @project = origin_task.project
+      def id_contents_item(topic)
+        hyphenate(['contents', topic.text_root_name, topic.id])
       end
 
 
-
-      public
-
-
-      def to_topic(text_object)
-        result = ''
-        case @origin_task
-        when ManifestTask::Contents
-          result = target_text_filename(text_object) + attr_id(:text, text_object)
-        when ManifestTask::Subcontents
-          result = attr_id(:text, text_object)
-        end
-        result
+      def id_subcontents_item(topic)
+        hyphenate(['subcontents', topic.text_root_name, topic.id])
       end
 
 
-      def to_contents_heading(text_object)
-        result = ''
-        case @origin_task
-        when ManifestTask::Topic
-          if @project.manifest.has_contents_for(text_object.text_root_name)
-            filename = target_contents_filename(text_object)
-            anchor_id = attr_id(:contents, text_object)
-            result = filename + anchor_id
-          end
-        end
-        result
+      def id_topic_header(topic)
+        hyphenate(['text', topic.text_root_name, topic.id])
       end
 
 
-      def to_document_top
+      def link_to_contents_item(topic, from: nil)
+        target_filename_contents(topic, from: from) + '#' + id_contents_item(topic)
+      end
+
+
+      def link_to_project_home(project)
+        project.manifest.find_document_html_by_index(0).destination.output_filename
+      end
+
+
+      def link_to_document_top
         '#top'
       end
 
 
-      def to_project_home
-        @project.manifest.find_document_html_by_index(0).destination.output_filename
+      def link_to_subcontents_item(topic, from: nil)
+        target_filename_subcontents(topic, from: from) + '#' + id_subcontents_item(topic)
       end
 
+
+      def link_to_topic_header(topic, from: nil)
+        target_filename_topic(topic, from: from) + '#' + id_topic_header(topic)
+      end
 
 
       private
 
 
-      def attr_id(target, text_object)
-        prefix = '#'
-        block_type = target.to_s
-        root_name = target_text_root_name(text_object)
-        section_number = target_section_number_as_attr(text_object)
-        prefix + ([block_type, root_name, section_number].compact.join('_'))
+      def self.hyphenate(a)
+        a.join('-')
       end
 
 
-      def target_contents_filename(text_object)
-        result = ''
-        if @project.has_multiple_html_documents
-#          result = File.basename(@project.manifest.contents_block_by_name(text_object.text_root_name).destination.output_filename)
-          result = @project.manifest.contents_block_filename_for(text_object.text_root_name)
+      def self.target_filename_contents(topic, from: nil)
+        contents_destination_output_filename = topic.project.manifest.contents_block_filename_for(topic.text_root_name)
+        case from
+        when :topic
+          if contents_destination_output_filename == topic.destination.output_filename
+            return ''
+          else
+            return contents_destination_output_filename
+          end
+        else
+          return contents_destination_output_filename
         end
-        result
       end
 
 
-      def target_text_filename(text_object)
-        result = ''
-        if @project.has_multiple_html_documents
-          result = File.basename(text_object.destination.output_filename)
+      def self.target_filename_subcontents(topic, from: nil)
+        case from
+        when :topic
+          return ''
+        else
+          return topic.destination.output_filename
         end
-        result
       end
 
 
-      def target_text_root_name(text_object)
-        text_object.text_root_name
-      end
-
-
-      def target_section_number_as_attr(text_object)
-        text_object.numbering_to_depth_max.join('_')
+      def self.target_filename_topic(topic, from: nil)
+        case from
+        when :contents
+          contents_destination_output_filename = topic.project.manifest.contents_block_filename_for(topic.text_root_name)
+          if contents_destination_output_filename == topic.destination.output_filename
+            return ''
+          else
+            return topic.destination.output_filename
+          end
+        when :subcontents
+          return ''
+        else
+          return topic.destination.output_filename
+        end
       end
 
 

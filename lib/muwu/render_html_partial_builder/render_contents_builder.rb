@@ -7,9 +7,9 @@ module Muwu
 
 
       attr_accessor(
-        :task_contents,
         :project,
         :renderer,
+        :task_contents,
         :text_root_name
       )
 
@@ -32,7 +32,6 @@ module Muwu
         @text_root_name = task_contents.text_root_name
         phase_1_set_text_root_name
         phase_2_set_destination
-        phase_2_set_href_helper
         phase_2_set_html_attr_id
         phase_2_set_item_depth_max
         phase_2_set_project
@@ -51,13 +50,8 @@ module Muwu
       end
 
 
-      def phase_2_set_href_helper
-        @renderer.href_helper = Helper::HtmlHrefHelper.new(@task_contents)
-      end
-
-
       def phase_2_set_html_attr_id
-        @renderer.html_attr_id = ['contents', @text_root_name].join('_')
+        @renderer.html_attr_id = ['contents', @text_root_name].join('-')
       end
 
 

@@ -8,7 +8,6 @@ module Muwu
 
       attr_accessor(
         :destination,
-        :href_helper,
         :html_attr_id,
         :item_depth_max,
         :project,
@@ -63,14 +62,15 @@ module Muwu
 
       def render_ol_li(topic)
         if task_depth_is_within_range(topic)
+          html_id = Helper::HrefHelper.id_subcontents_item(topic)
           if topic.is_parent_heading
-            write_tag_li_open
+            write_tag_li_open(html_id)
             @destination.margin_indent do
               render_ol_li_heading_and_topics(topic)
             end
             write_tag_li_close_outline
           elsif topic.is_not_parent_heading
-            write_tag_li_open
+            write_tag_li_open(html_id)
             render_ol_li_heading(topic)
             write_tag_li_close_inline
           end
@@ -107,7 +107,7 @@ module Muwu
 
       def render_table_tr(topic)
         if task_depth_is_within_range(topic)
-          html_id = ['subcontents', @text_root_name, topic.numbering.join('_')].join('_')
+          html_id = Helper::HrefHelper.id_subcontents_item(topic)
           write_tag_tr_open(html_id)
           @destination.margin_indent do
             if topic.is_parent_heading
@@ -148,7 +148,7 @@ module Muwu
 
 
       def render_tag_a_section_heading(topic, trailing_line_feed: false)
-        href = @href_helper.to_topic(topic)
+        href = Helper::HrefHelper.link_to_topic_header(topic, from: :subcontents)
         write_tag_a_open(href)
         write_text_section_heading(topic)
         write_tag_a_close
@@ -159,7 +159,7 @@ module Muwu
 
 
       def render_tag_a_section_number(topic, attr_list: nil)
-        href = @href_helper.to_topic(topic)
+        href = Helper::HrefHelper.link_to_topic_header(topic, from: :subcontents)
         write_tag_a_open(href, attr_list: attr_list)
         write_text_section_number(topic)
         write_tag_a_close
@@ -176,8 +176,8 @@ module Muwu
       end
 
 
-      def write_tag_a_open(href_id, attr_list: nil)
-        @destination.write_inline tag_a_open(href_id, attr_list: attr_list)
+      def write_tag_a_open(href, attr_list: nil)
+        @destination.write_inline tag_a_open(href, attr_list: attr_list)
       end
 
 
@@ -211,8 +211,8 @@ module Muwu
       end
 
 
-      def write_tag_li_open
-        @destination.write_inline_indented tag_li_open
+      def write_tag_li_open(html_id)
+        @destination.write_inline_indented tag_li_open(html_id)
       end
 
 
@@ -310,8 +310,8 @@ module Muwu
       end
 
 
-      def tag_li_open
-        "<li data-subcontents='list-topic'>"
+      def tag_li_open(html_id)
+        "<li data-subcontents='list-topic' id='#{html_id}'>"
       end
 
 

@@ -287,14 +287,6 @@ module Muwu
     end
 
 
-    # TODO: Broken due to introduction of the `/compiled` folder
-    # Keeping it as a comment in case it becomes useful in the future.
-    #
-    # def path_images
-    #   File.absolute_path(File.join(@working_directory, 'images'))
-    # end
-
-
     def path_outline
       @working_directory
     end

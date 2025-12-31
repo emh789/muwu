@@ -52,7 +52,7 @@ module Muwu
 
       def phase_1_set_id
         @topic.id = @@topic_id
-        @@topic_id = @@topic_id + 1
+        @@topic_id = @@topic_id.next
       end
 
 
@@ -188,11 +188,13 @@ module Muwu
         when '.md'
           determine_heading_from_file_md
         else
+          # TODO: Obsolete? What criteria produce this outcome?
           determine_heading_from_file_basename
         end
       end
 
 
+      # TODO: Obsolete? see def determine_heading_from_file
       def determine_heading_from_file_basename
         heading = File.basename(@topic.source_filename, '.*')
         origin = :basename
@@ -272,7 +274,6 @@ module Muwu
         number_outgoing[-1] = number_outgoing[-1].next
         number_outgoing
       end
-
 
 
     end

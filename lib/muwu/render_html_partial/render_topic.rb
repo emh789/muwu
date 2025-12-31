@@ -11,26 +11,26 @@ module Muwu
 
       attr_accessor(
         :commonmarker_options,
+        :depth,
         :destination,
         :distinct,
         :does_have_source_text,
         :end_links,
         :heading,
         :heading_origin,
-        :html_attr_id,
+        :html_id,
         :id,
         :is_parent_heading,
         :numbering,
+        :numbering_as_text,
         :project,
-        :section_depth,
-        :section_number_as_attr,
-        :section_number_as_text,
         :source_filename_absolute,
         :source_filename_relative,
         :source_relative_segments,
         :subsections_are_distinct,
         :subtopics,
         :text_root_name,
+        :text_root_name_id,
         :will_render_section_number
       )
 
@@ -177,7 +177,7 @@ module Muwu
         if fragment.children.any? && fragment.children.first.name =~ /\Ah\d{1}\z/i
           starting_heading = fragment.first_element_child.remove
           starting_heading['data-topic'] = 'section-heading'
-          starting_heading['data-depth'] = @section_depth
+          starting_heading['data-depth'] = @depth
         end
 
         %w(blockquote dd dl dt h1 h2 h3 h4 h5 h6 li ol p pre table td tr ul).each do |element|
@@ -229,7 +229,7 @@ module Muwu
 
 
       def tag_heading
-        "<div data-topic='section-heading' data-depth='#{@section_depth}'>#{@heading}</div>"
+        "<div data-topic='section-heading' data-depth='#{@depth}'>#{@heading}</div>"
       end
 
 
@@ -239,7 +239,7 @@ module Muwu
 
 
       def tag_section_open
-        "<section data-document-block='topic' data-depth='#{@section_depth}' data-number='#{@section_number_as_text}' data-source='#{@source_filename_relative}' id='#{@html_attr_id}'>"
+        "<section data-document-block='topic' data-topic-depth='#{@depth}' data-section-number='#{@numbering_as_text}' data-source='#{@source_filename_relative}' id='#{@html_id}'>"
       end
 
 
@@ -249,7 +249,7 @@ module Muwu
 
 
       def tag_span_section_number
-        "<div data-topic='section-number' data-depth='#{@section_depth}'>#{@section_number_as_text}</div>"
+        "<div data-topic='section-number' data-depth='#{@depth}'>#{@numbering_as_text}</div>"
       end
 
 

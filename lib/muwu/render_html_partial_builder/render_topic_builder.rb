@@ -23,16 +23,14 @@ module Muwu
       def build_from_manifest_topic(manifest_topic)
         @manifest_topic = manifest_topic
         @project = manifest_topic.project
-        @href_helper = Helper::HtmlHrefHelper.new(manifest_topic)
         phase_1_set_id
         phase_1_set_commonmarker_options
         phase_1_set_destination
         phase_1_set_heading
         phase_1_set_heading_origin
         phase_1_set_numbering
-        phase_1_set_section_depth
-        phase_1_set_section_number_as_attr
-        phase_1_set_section_number_as_text
+        phase_1_set_depth
+        phase_1_set_numbering_as_text
         phase_1_set_does_have_source_text
         phase_1_set_is_parent_heading
         phase_1_set_text_root_name
@@ -41,9 +39,9 @@ module Muwu
         phase_3_set_subtopics
         phase_3_set_source_relative_segments
         phase_4_set_end_links
-        phase_4_set_html_attr_id
         phase_4_set_will_render_section_number
         phase_4_set_subsections_are_distinct
+        phase_5_set_html_id
       end
 
 
@@ -98,18 +96,13 @@ module Muwu
       end
 
 
-      def phase_1_set_section_depth
-        @renderer.section_depth = @manifest_topic.topic_depth
+      def phase_1_set_depth
+        @renderer.depth = @manifest_topic.topic_depth
       end
 
 
-      def phase_1_set_section_number_as_attr
-        @renderer.section_number_as_attr = @manifest_topic.numbering.join('_')
-      end
-
-
-      def phase_1_set_section_number_as_text
-        @renderer.section_number_as_text = @manifest_topic.numbering.join('.')
+      def phase_1_set_numbering_as_text
+        @renderer.numbering_as_text = @manifest_topic.numbering.join('.')
       end
 
 
@@ -153,11 +146,6 @@ module Muwu
       end
 
 
-      def phase_4_set_html_attr_id
-        @renderer.html_attr_id = ['text', @renderer.text_root_name, @renderer.section_number_as_attr].join('_')
-      end
-
-
       def phase_4_set_will_render_section_number
         @renderer.will_render_section_number = determine_whether_topic_will_render_section_number
       end
@@ -167,6 +155,10 @@ module Muwu
         @renderer.subsections_are_distinct = determine_whether_subsections_are_distinct
       end
 
+
+      def phase_5_set_html_id
+        @renderer.html_id = Helper::HrefHelper.id_topic_header(@manifest_topic)
+      end
 
 
       private
@@ -193,11 +185,11 @@ module Muwu
       def determine_end_links_href(link)
         case link
         when 'contents'
-          @href_helper.to_contents_heading(@manifest_topic)
+          Helper::HrefHelper.link_to_contents_item(@manifest_topic, from: :topic)
         when 'home'
-          @href_helper.to_project_home
+          Helper::HrefHelper.link_to_project_home(@project)
         when 'top'
-          @href_helper.to_document_top
+          Helper::HrefHelper.link_to_document_top
         end
       end
 
@@ -215,9 +207,9 @@ module Muwu
         if @manifest_topic.does_have_subtopics
           if @project.options.render_sections_distinctly_depth_max == nil
             return true
-          elsif @renderer.section_depth < @project.options.render_sections_distinctly_depth_max
+          elsif @renderer.depth < @project.options.render_sections_distinctly_depth_max
             return true
-          elsif @renderer.section_depth >= @project.options.render_sections_distinctly_depth_max
+          elsif @renderer.depth >= @project.options.render_sections_distinctly_depth_max
             return false
           end
         end
@@ -234,9 +226,9 @@ module Muwu
       def topic_should_be_distinct
         if @project.options.render_sections_distinctly_depth_max == nil
           return true
-        elsif @renderer.section_depth <= @project.options.render_sections_distinctly_depth_max
+        elsif @renderer.depth <= @project.options.render_sections_distinctly_depth_max
           return true
-        elsif @renderer.section_depth > @project.options.render_sections_distinctly_depth_max
+        elsif @renderer.depth > @project.options.render_sections_distinctly_depth_max
           return false
         end
       end

@@ -7,7 +7,6 @@ module Muwu
         :destination,
         :css_filename,
         :css_include_method,
-        # :filename,
         :index,
         :js_filename,
         :js_include_method,
@@ -36,7 +35,7 @@ module Muwu
 
 
       def contents_blocks_by_name(text_root_name)
-        contents_blocks.select { |task| task.text_root_name.downcase == text_root_name.downcase }
+        contents_blocks.select { |contents| contents.text_root_name.downcase == text_root_name.downcase }
       end
 
 
@@ -62,11 +61,6 @@ module Muwu
           return false
         end
       end
-
-
-
-      public
-
 
 
     end
