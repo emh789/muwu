@@ -90,17 +90,17 @@ module Muwu
     private
 
 
-    def validate_option_contents_section_numbers_receive_link
-      return validation_for_boolean
-    end
-
-
     def validate_option_generate_navigators_automatically
       return validation_for_boolean
     end
 
 
     def validate_option_generate_subcontents_automatically
+      return validation_for_boolean
+    end
+
+
+    def validate_option_generate_topic_inner_identifiers
       return validation_for_boolean
     end
 

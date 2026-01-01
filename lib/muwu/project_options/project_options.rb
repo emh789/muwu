@@ -5,6 +5,7 @@ module Muwu
     attr_accessor(
       :generate_navigators_automatically,
       :generate_subcontents_automatically,
+      :generate_topic_inner_identifiers,
       :html_head_includes_metadata_tags,
       :html_lang,
       :html_uses_javascript_navigation,

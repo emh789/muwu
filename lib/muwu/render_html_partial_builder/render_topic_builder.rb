@@ -26,6 +26,7 @@ module Muwu
         phase_1_set_id
         phase_1_set_commonmarker_options
         phase_1_set_destination
+        phase_1_set_generate_inner_identifiers
         phase_1_set_heading
         phase_1_set_heading_origin
         phase_1_set_numbering
@@ -68,6 +69,11 @@ module Muwu
         elsif @manifest_topic.source_file_does_not_exist
           @renderer.does_have_source_text = false
         end
+      end
+
+
+      def phase_1_set_generate_inner_identifiers
+        @renderer.generate_inner_identifiers = @project.options.generate_topic_inner_identifiers
       end
 
 

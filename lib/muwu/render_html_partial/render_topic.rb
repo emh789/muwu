@@ -16,6 +16,7 @@ module Muwu
         :distinct,
         :does_have_source_text,
         :end_links,
+        :generate_inner_identifiers,
         :heading,
         :heading_origin,
         :html_id,
@@ -30,7 +31,7 @@ module Muwu
         :subsections_are_distinct,
         :subtopics,
         :text_root_name,
-        :text_root_name_id,
+        # :text_root_name_id,
         :will_render_section_number
       )
 
@@ -180,14 +181,16 @@ module Muwu
           starting_heading['data-depth'] = @depth
         end
 
-        %w(blockquote dd dl dt h1 h2 h3 h4 h5 h6 li ol p pre table td tr ul).each do |element|
-          fragment.css(element).each do |node|
-            data_source_class = []
-            @source_relative_segments.each_index do |i|
-              data_source_class << "#{source_relative_segments[i]}-#{node.name}"
+        if @generate_inner_identifiers
+          %w(blockquote dd dl dt h1 h2 h3 h4 h5 h6 li ol p pre table td tr ul).each do |element|
+            fragment.css(element).each do |node|
+              data_source_class = []
+              @source_relative_segments.each_index do |i|
+                data_source_class << "#{source_relative_segments[i]}-#{node.name}"
+              end
+              node['data-topic-source-class'] = data_source_class.join(' ')
+              node['data-topic-id-class'] = "#{id}-#{node.name}"
             end
-            node['data-topic-source-class'] = data_source_class.join(' ')
-            node['data-topic-id-class'] = "#{id}-#{node.name}"
           end
         end
 

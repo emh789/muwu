@@ -18,9 +18,9 @@ module Muwu
     }
 
     PROJECT_OPTIONS = {
-      contents_section_numbers_receive_link: true,
       generate_navigators_automatically: true,
       generate_subcontents_automatically: false,
+      generate_topic_inner_identifiers: false,
       html_head_includes_metadata_tags: true,
       html_lang: nil,
       html_uses_javascript_navigation: false,
