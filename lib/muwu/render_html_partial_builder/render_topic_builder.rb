@@ -41,7 +41,7 @@ module Muwu
         phase_3_set_source_relative_segments
         phase_4_set_end_links
         phase_4_set_will_render_section_number
-        phase_4_set_subsections_are_distinct
+        phase_4_set_subtopics_are_distinct
         phase_5_set_html_id
       end
 
@@ -157,8 +157,8 @@ module Muwu
       end
 
 
-      def phase_4_set_subsections_are_distinct
-        @renderer.subsections_are_distinct = determine_whether_subsections_are_distinct
+      def phase_4_set_subtopics_are_distinct
+        @renderer.subtopics_are_distinct = determine_whether_subtopics_are_distinct
       end
 
 
@@ -209,7 +209,7 @@ module Muwu
       end
 
 
-      def determine_whether_subsections_are_distinct
+      def determine_whether_subtopics_are_distinct
         if @manifest_topic.does_have_subtopics
           if @project.options.render_sections_distinctly_depth_max == nil
             return true

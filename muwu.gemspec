@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'muwu'
-  s.version     = '4.0.0.alpha'
-  s.date        = '2025-12-13'
+  s.version     = '4.0.0.beta'
+  s.date        = '2026-01-01'
   s.licenses    = ['GPL-3.0']
   s.summary     = 'Markup Writeup'
   s.description = 'Compile markup files (Markdown and YAML) into HTML.'

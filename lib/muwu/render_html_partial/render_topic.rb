@@ -28,10 +28,9 @@ module Muwu
         :source_filename_absolute,
         :source_filename_relative,
         :source_relative_segments,
-        :subsections_are_distinct,
         :subtopics,
+        :subtopics_are_distinct,
         :text_root_name,
-        # :text_root_name_id,
         :will_render_section_number
       )
 
@@ -162,25 +161,28 @@ module Muwu
       end
 
 
-      def source_to_html
+      def source_convert_to_html
         case File.extname(@source_filename_absolute).downcase
         when '.md'
-          source_to_html_from_md
+          source_html_parse(source_html_from_md)
         end
       end
 
 
-      def source_to_html_from_md
-        fragment = Nokogiri::HTML5.fragment(source_md_to_html)
-        fragment.css('a.anchor[aria-hidden]').each { |node| node.remove }
+      def source_html_from_md
+        Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
+      end
 
+
+      def source_html_parse(source_html)
+        fragment = Nokogiri::HTML5.fragment(source_html)
+        fragment.css('a.anchor[aria-hidden]').each { |node| node.remove }
         starting_heading = nil
         if fragment.children.any? && fragment.children.first.name =~ /\Ah\d{1}\z/i
           starting_heading = fragment.first_element_child.remove
           starting_heading['data-topic'] = 'section-heading'
           starting_heading['data-depth'] = @depth
         end
-
         if @generate_inner_identifiers
           %w(blockquote dd dl dt h1 h2 h3 h4 h5 h6 li ol p pre table td tr ul).each do |element|
             fragment.css(element).each do |node|
@@ -193,16 +195,10 @@ module Muwu
             end
           end
         end
-
         if starting_heading
           fragment.children.first.previous = starting_heading
         end
         fragment.to_html
-      end
-
-
-      def source_md_to_html
-        Commonmarker.to_html(File.read(@source_filename_absolute), options: @commonmarker_options, plugins: { syntax_highligher: nil })
       end
 
 
