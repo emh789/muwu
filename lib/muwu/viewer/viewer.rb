@@ -29,9 +29,9 @@ module Muwu
 
     def view_home_document
       begin
-        system "lynx #{@document_home_filepath}", exception: true
+        system "open #{@document_home_filepath}", exception: true
       rescue Errno::ENOENT
-        raise ProjectExceptionHandler::Fatal.new(ProjectException::LynxNotAvailable.new)
+        raise ProjectExceptionHandler::Fatal.new(ProjectException::NoHTMLViewerConfigured.new)
       end
     end
 

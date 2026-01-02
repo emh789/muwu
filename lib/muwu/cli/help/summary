@@ -10,7 +10,7 @@ Command line:
   muwu reset compiled   reset the `compiled/` subdirectory
   muwu reset css        reset the default CSS files
   muwu sync             synchronize from/to a remote location (requires rsync)
-  muwu view             view a compiled project (requires lynx)
+  muwu view             view a compiled project (shortcut for `open compiled/[index.html]`)
 
 For more detailed instructions:
   muwu help [command]

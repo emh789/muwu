@@ -1,6 +1,6 @@
 module Muwu
   module ProjectException
-    class LynxNotAvailable
+    class NoHTMLViewerConfigured
 
 
       def initialize
@@ -9,7 +9,7 @@ module Muwu
 
 
       def report
-        "lynx is not available"
+        "No HTML viewer configued to run from the 'open' command."
       end
 
 
