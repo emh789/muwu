@@ -41,10 +41,10 @@ module Muwu
           render_section_number
           render_heading
           render_text
-          if (@is_parent_heading == true) && (@subsections_are_distinct == true)
+          if (@is_parent_heading == true) && (@subtopics_are_distinct == true)
             render_end_links
             render_subtopics
-          elsif (@is_parent_heading == true) && (@subsections_are_distinct == false)
+          elsif (@is_parent_heading == true) && (@subtopics_are_distinct == false)
             render_subtopics
             render_end_links
           elsif (@is_parent_heading == false)
