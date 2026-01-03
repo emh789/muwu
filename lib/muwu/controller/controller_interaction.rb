@@ -96,8 +96,10 @@ module Muwu
     def render_reset_compiled_heading
       puts '# Muwu'
       puts '# Reset `compiled/`'
+      puts
       puts '- This will remove all contents of the `compiled/` folder.'
       puts '- This action cannot be undone.'
+      puts
     end
 
 
@@ -109,13 +111,17 @@ module Muwu
     def render_reset_css_heading(project)
       puts '# Muwu'
       puts '# Reset CSS'
-      puts '- This will reset the following files and folders to their original state:'
+      puts ''
+      puts 'This will reset the following files and folders to their original state:'
       determine_reset_css_files(project).each do |file|
-        puts "  * #{file}"
+        puts "  - #{file}"
       end
-      puts "- If #{project.path_css_extensions} does not exist, it will be created."
-      puts '  Otherwise, its existing contents will remain unchanged.'
+      puts
+      puts "If #{project.path_css_extensions} does not exist, it will be created."
+      puts 'Otherwise, its existing contents will remain unchanged.'
+      puts
       puts '- This action cannot be undone'
+      puts
     end
 
 
