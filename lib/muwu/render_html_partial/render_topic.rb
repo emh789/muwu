@@ -142,7 +142,7 @@ module Muwu
 
 
       def write_text_source_to_html
-        @destination.write_inline source_to_html
+        @destination.write_inline source_convert_to_html
       end
 
 

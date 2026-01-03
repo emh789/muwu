@@ -268,9 +268,9 @@ module Muwu
 
 
       def topic_distinct_parent_without_source_should_have_end_links
-        if determine_whether_subsections_are_distinct == true
+        if determine_whether_subtopics_are_distinct == true
           return false
-        elsif determine_whether_subsections_are_distinct == false
+        elsif determine_whether_subtopics_are_distinct == false
           return true
         end
       end
