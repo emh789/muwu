@@ -5,11 +5,18 @@
   }
   *:focus {
     background-color: rgba(196, 196, 0, 0.3);
-    outline-style: solid;
     outline-color: rgba(128, 128, 0, 0.3);
+    outline-style: solid;
+    outline-width: 2px;
   }
   a {
-    color: inherit;
+    color: #080888;
+  }
+  a:visited {
+    color: #550888;
+  }
+  a:active {
+    color: #880808;
   }
   div.contents .document_link {
     color: #002040;
@@ -29,7 +36,8 @@
     border-style: solid;
   }
   pre {
-    background-color: #fcfcfc;
-    border: 1px #e0e0e0 solid;
+    background-color: #e8e8e8;
+    border-color: #d0d0d0;
+    border-style: solid;
   }
 }
