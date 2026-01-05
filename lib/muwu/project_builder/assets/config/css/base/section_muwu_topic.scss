@@ -8,6 +8,7 @@
 [data-topic='section-heading'] {
   font-weight: bold;
   margin-bottom: $margin;
+  margin-top: $margin-half;
 }
 [data-depth='1'][data-topic='section-heading'] {
   font-size: $font-size-h1;
