@@ -36,7 +36,7 @@ Maybe you don't know the page size for which a work will be destined. Maybe ther
 To install Muwu as a Ruby Gem, use the command:
 
 ~~~
-gem install muwu
+gem install muwu --version '4.0.0.beta'
 ~~~
 
 
@@ -88,7 +88,7 @@ gem install muwu
 : Erase the contents of the `compiled` folder
 
 `muwu reset css`
-: Return the initial CSS files to their original contents.
+: Return the initial base CSS files to their original contents.
 
 `muwu sync pull [options]`
 : Synchronize the project from a remote location. _(requires rsync)_
@@ -97,9 +97,8 @@ gem install muwu
 : Synchronize the project to a remote location. _(requires rsync)_
 
 `muwu view`
-: View the compiled project. _(requires lynx)_
+: View the compiled project in a web browser. _(shortcut for `open compiled/[index.html]`)_
 
+## User Guide
 
-## Documentation
-
-User guide: https://ehdocumentdesign.com/muwu_guide/index.html
+<https://didntfollowtheinstructions.com/muwu> contains detailed instructions, and is an example of a compiled muwu project.
