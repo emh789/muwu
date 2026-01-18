@@ -203,7 +203,7 @@ module Muwu
 
 
       def tag_nav_a(name, href)
-        "<a data-topic='navigation-link' href='#{href}'>[#{name}]</a>"
+        "<a class='document_link' data-topic='navigation-link' href='#{href}'>[#{name}]</a>"
       end
 
 
