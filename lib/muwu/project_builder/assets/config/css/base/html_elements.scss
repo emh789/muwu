@@ -110,6 +110,7 @@ p {
 
 pre {
   margin: $margin 0;
+  overflow-x: auto;
   padding: $margin-half $margin;
 }
 
