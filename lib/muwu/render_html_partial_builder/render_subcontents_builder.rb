@@ -32,7 +32,6 @@ module Muwu
         @text_root_name = task_subcontents.text_root_name
         set_destination
         set_html_attr_id
-        set_item_depth_max
         set_project
         set_text_root_blocks
         set_will_render_section_numbers
@@ -46,11 +45,6 @@ module Muwu
 
       def set_html_attr_id
         @renderer.html_attr_id = 'subcontents'
-      end
-
-
-      def set_item_depth_max
-        @renderer.item_depth_max = @project.options.render_sections_distinctly_depth_max
       end
 
 

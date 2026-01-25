@@ -33,7 +33,6 @@ module Muwu
         phase_1_set_text_root_name
         phase_2_set_destination
         phase_2_set_html_attr_id
-        phase_2_set_item_depth_max
         phase_2_set_project
         phase_2_set_topics
         phase_2_set_will_render_section_numbers
@@ -52,11 +51,6 @@ module Muwu
 
       def phase_2_set_html_attr_id
         @renderer.html_attr_id = ['contents', @text_root_name].join('-')
-      end
-
-
-      def phase_2_set_item_depth_max
-        @renderer.item_depth_max = @project.options.render_sections_distinctly_depth_max
       end
 
 

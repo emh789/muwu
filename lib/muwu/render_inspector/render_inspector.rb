@@ -199,7 +199,7 @@ module Muwu
     def render_inspector_manifest_task_topic(topic)
       puts_line [
         indent("| Topic #{topic.id}"),
-        topic.numbering.inspect,
+        topic.numbering_for_display,
         topic.heading.inspect,
         topic.source_filename,
         ('!!' if topic.source_file_does_not_exist)

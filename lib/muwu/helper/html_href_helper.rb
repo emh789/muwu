@@ -7,17 +7,17 @@ module Muwu
 
 
       def id_contents_item(topic)
-        hyphenate(['contents', topic.text_root_name, topic.id])
+        hyphenate(['contents', topic.text_root_name, topic.numbering_for_display])
       end
 
 
       def id_subcontents_item(topic)
-        hyphenate(['subcontents', topic.text_root_name, topic.id])
+        hyphenate(['subcontents', topic.text_root_name, topic.numbering_for_display])
       end
 
 
       def id_topic_header(topic)
-        hyphenate(['text', topic.text_root_name, topic.id])
+        hyphenate(['text', topic.text_root_name, topic.numbering_for_display])
       end
 
 

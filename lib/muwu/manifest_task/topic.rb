@@ -34,8 +34,24 @@ module Muwu
       public
 
 
+      def depth
+        numbering.length
+      end
+
+
       def does_have_subtopics
         is_parent_heading && (@subtopics.length >= 1)
+      end
+
+
+      def is_distinct
+        if project.options.topic_depth_max == nil
+          true
+        elsif depth <= project.options.topic_depth_max
+          true
+        elsif depth > project.options.topic_depth_max
+          false
+        end
       end
 
 
@@ -65,9 +81,9 @@ module Muwu
 
 
       def numbering_to_depth_max
-        if @project.options.render_sections_distinctly_depth_max
+        if @project.options.topic_depth_max
           index_min = 0
-          index_max = @project.options.render_sections_distinctly_depth_max - 1
+          index_max = @project.options.topic_depth_max - 1
           if index_max >= index_min
             @numbering[index_min..index_max]
           else
@@ -76,6 +92,11 @@ module Muwu
         else
           @numbering
         end
+      end
+
+
+      def numbering_for_display
+        numbering_to_depth_max.join('.')
       end
 
 

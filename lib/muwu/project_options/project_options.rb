@@ -48,6 +48,11 @@ module Muwu
     public
 
 
+    def topic_depth_max
+      render_sections_distinctly_depth_max
+    end
+
+
     def set_option(key, value)
       if Default::PROJECT_OPTIONS.has_key?(key)
         key_ivsym = "@#{key.to_s}"

@@ -12,7 +12,6 @@ module Muwu
       attr_accessor(
         :destination,
         :html_attr_id,
-        :item_depth_max,
         :project,
         :topics,
         :text_root_name,
@@ -65,7 +64,7 @@ module Muwu
 
 
       def render_ol_li(topic)
-        if task_depth_is_within_range(topic)
+        if topic.is_distinct
           html_id = Helper::HrefHelper.id_contents_item(topic)
           if topic.is_parent_heading
             write_tag_li_open(html_id)
@@ -105,7 +104,7 @@ module Muwu
 
 
       def render_table_tr(topic)
-        if task_depth_is_within_range(topic)
+        if topic.is_distinct
           html_id = Helper::HrefHelper.id_contents_item(topic)
           write_tag_tr_open(html_id)
           @destination.margin_indent do
@@ -351,19 +350,6 @@ module Muwu
 
       def tag_tr_open(html_id)
         "<tr id='#{html_id}'>"
-      end
-
-
-      def task_depth_is_within_range(topic)
-        result = nil
-        if @item_depth_max == nil
-          result = true
-        elsif topic.topic_depth <= @item_depth_max
-          result = true
-        elsif topic.topic_depth > @item_depth_max
-          result = false
-        end
-        result
       end
 
 

@@ -103,12 +103,12 @@ module Muwu
 
 
       def phase_1_set_depth
-        @renderer.depth = @manifest_topic.topic_depth
+        @renderer.depth = @manifest_topic.depth
       end
 
 
       def phase_1_set_numbering_as_text
-        @renderer.numbering_as_text = @manifest_topic.numbering.join('.')
+        @renderer.numbering_as_text = @manifest_topic.numbering_for_display
       end
 
 
