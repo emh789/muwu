@@ -191,7 +191,7 @@ module Muwu
                 data_source_class << "#{source_relative_segments[i]}-#{node.name}"
               end
               node['data-topic-source-class'] = data_source_class.join(' ')
-              node['data-topic-id-class'] = "#{id}-#{node.name}"
+              node['data-topic-id-class'] = "#{@id}-#{node.name}"
             end
           end
         end
