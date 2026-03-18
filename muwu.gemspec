@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'muwu'
-  s.version     = '4.0.0'
+  s.version     = '5.0.0'
   s.date        = '2026-01-17'
   s.licenses    = ['GPL-3.0-only']
   s.summary     = 'Markup Writeup'
