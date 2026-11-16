@@ -36,7 +36,7 @@ Maybe you don't know the page size for which a work will be destined. Maybe ther
 To install Muwu as a Ruby Gem, use the command:
 
 ~~~
-gem install muwu --version '4.0.0.beta'
+gem install muwu
 ~~~
 
 
